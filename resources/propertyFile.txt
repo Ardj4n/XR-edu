@@ -1,0 +1,1134 @@
+[chunk id: 0, chunk size: 4, chunk type: version]
+   Version . . . :  7
+[chunk id: 9, chunk size: 84, chunk type: material]
+   Name  . . . . :  09 - Default
+   Emission  . . :  0, 0, 0
+   Albedo  . . . :  0.2, 0.2, 0.2
+   Roughness . . :  0.28
+   Metalness . . :  0
+   Transparency  :  1
+   Albedo tex. . :  [none]
+   Normalmap tex.:  [none]
+   Heightmap tex.:  [none]
+   Roughness tex.:  [none]
+   Metalness tex.:  [none]
+[chunk id: 9, chunk size: 84, chunk type: material]
+   Name  . . . . :  15 - Default
+   Emission  . . :  0, 0, 0
+   Albedo  . . . :  0, 0, 0
+   Roughness . . :  0.01
+   Metalness . . :  0
+   Transparency  :  1
+   Albedo tex. . :  [none]
+   Normalmap tex.:  [none]
+   Heightmap tex.:  [none]
+   Roughness tex.:  [none]
+   Metalness tex.:  [none]
+[chunk id: 9, chunk size: 89, chunk type: material]
+   Name  . . . . :  blackmetal
+   Emission  . . :  0, 0, 0
+   Albedo  . . . :  0.588, 0.588, 0.588
+   Roughness . . :  0.81
+   Metalness . . :  0
+   Transparency  :  1
+   Albedo tex. . :  greyMetal.dds
+   Normalmap tex.:  [none]
+   Heightmap tex.:  [none]
+   Roughness tex.:  [none]
+   Metalness tex.:  [none]
+[chunk id: 9, chunk size: 90, chunk type: material]
+   Name  . . . . :  Material #0
+   Emission  . . :  0, 0, 0
+   Albedo  . . . :  0.588, 0.588, 0.588
+   Roughness . . :  0.81
+   Metalness . . :  0
+   Transparency  :  1
+   Albedo tex. . :  DarkMetal.dds
+   Normalmap tex.:  [none]
+   Heightmap tex.:  [none]
+   Roughness tex.:  [none]
+   Metalness tex.:  [none]
+[chunk id: 9, chunk size: 84, chunk type: material]
+   Name  . . . . :  13 - Default
+   Emission  . . :  1, 1, 1
+   Albedo  . . . :  1, 1, 1
+   Roughness . . :  0.81
+   Metalness . . :  0
+   Transparency  :  1
+   Albedo tex. . :  [none]
+   Normalmap tex.:  [none]
+   Heightmap tex.:  [none]
+   Roughness tex.:  [none]
+   Metalness tex.:  [none]
+[chunk id: 9, chunk size: 98, chunk type: material]
+   Name  . . . . :  03 - Default
+   Emission  . . :  0, 0, 0
+   Albedo  . . . :  0.588, 0.588, 0.588
+   Roughness . . :  0.81
+   Metalness . . :  0
+   Transparency  :  1
+   Albedo tex. . :  BlackWindowBreak.dds
+   Normalmap tex.:  [none]
+   Heightmap tex.:  [none]
+   Roughness tex.:  [none]
+   Metalness tex.:  [none]
+[chunk id: 9, chunk size: 84, chunk type: material]
+   Name  . . . . :  08 - Default
+   Emission  . . :  0.588235, 0, 0
+   Albedo  . . . :  0.588235, 0, 0
+   Roughness . . :  0.81
+   Metalness . . :  0
+   Transparency  :  1
+   Albedo tex. . :  [none]
+   Normalmap tex.:  [none]
+   Heightmap tex.:  [none]
+   Roughness tex.:  [none]
+   Metalness tex.:  [none]
+[chunk id: 9, chunk size: 93, chunk type: material]
+   Name  . . . . :  07 - Default
+   Emission  . . :  0, 0, 0
+   Albedo  . . . :  0.588, 0.588, 0.588
+   Roughness . . :  0.81
+   Metalness . . :  0
+   Transparency  :  1
+   Albedo tex. . :  WhiteMarble.dds
+   Normalmap tex.:  [none]
+   Heightmap tex.:  [none]
+   Roughness tex.:  [none]
+   Metalness tex.:  [none]
+[chunk id: 9, chunk size: 88, chunk type: material]
+   Name  . . . . :  21 - Default
+   Emission  . . :  0, 0, 0
+   Albedo  . . . :  0.588, 0.588, 0.588
+   Roughness . . :  0.81
+   Metalness . . :  0
+   Transparency  :  1
+   Albedo tex. . :  teapot.dds
+   Normalmap tex.:  [none]
+   Heightmap tex.:  [none]
+   Roughness tex.:  [none]
+   Metalness tex.:  [none]
+[chunk id: 9, chunk size: 86, chunk type: material]
+   Name  . . . . :  04 - Default
+   Emission  . . :  0, 0, 0
+   Albedo  . . . :  0.588235, 0.588235, 0.588235
+   Roughness . . :  0.81
+   Metalness . . :  0
+   Transparency  :  1
+   Albedo tex. . :  sand.dds
+   Normalmap tex.:  [none]
+   Heightmap tex.:  [none]
+   Roughness tex.:  [none]
+   Metalness tex.:  [none]
+[chunk id: 9, chunk size: 86, chunk type: material]
+   Name  . . . . :  20 - Default
+   Emission  . . :  0, 0, 0
+   Albedo  . . . :  0.588, 0.588, 0.588
+   Roughness . . :  0.81
+   Metalness . . :  0
+   Transparency  :  1
+   Albedo tex. . :  fire.dds
+   Normalmap tex.:  [none]
+   Heightmap tex.:  [none]
+   Roughness tex.:  [none]
+   Metalness tex.:  [none]
+[chunk id: 1, chunk size: 82, chunk type: node]
+   Name  . . . . :  [root]
+   Matrix  . . . :  	1	0	0	0
+                    	0	1	0	0
+                    	0	0	1	0
+                    	0	0	0	1
+   Nr. children  :  11
+   Target node . :  [none]
+[chunk id: 18, chunk size: 6494, chunk type: mesh]
+   Name  . . . . :  Schiena
+   Matrix  . . . :  	-1.17303e-07	-0.709062	-0.125027	1.20328
+                    	0	0.138919	-0.787846	131.626
+                    	0.72	-1.15521e-07	-2.03694e-08	0.625516
+                    	0	0	-0	1
+   Nr. children  :  4
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  157
+   Nr. faces . . :  216
+   Material  . . :  09 - Default
+   Radius  . . . :  44.7674
+   BBox minimum  :  -4.48504, -44.5422, -4.4169
+   BBox maximum  :  4.48504, 0, 4.4169
+   Physics . . . :  0
+[chunk id: 18, chunk size: 1045, chunk type: mesh]
+   Name  . . . . :  Spalle
+   Matrix  . . . :  	-1.67857e-07	1.2616e-07	1.38889	0.00386328
+                    	-1.265	0.563674	-2.06961e-07	-2.30979
+                    	-0.551569	-1.12664	5.19812e-08	0.045166
+                    	0	0	-0	1
+   Nr. children  :  5
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  32
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  19.5223
+   BBox minimum  :  -10.1534, -5.02391, -15.8734
+   BBox maximum  :  1.00209, 5.10552, 15.5998
+   Physics . . . :  0
+[chunk id: 18, chunk size: 858, chunk type: mesh]
+   Name  . . . . :  AvBraccioSx
+   Matrix  . . . :  	0.906308	-0.422618	-3.55271e-15	-3.45984
+                    	0.422618	0.906308	-0	-0.37455
+                    	-3.55271e-15	3.55271e-15	1	11.1497
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  15.214
+   BBox minimum  :  -14.7958, -2.33802, -2.36742
+   BBox maximum  :  0.0220532, 2.36742, 2.63548
+   Physics . . . :  0
+[chunk id: 18, chunk size: 25071, chunk type: mesh]
+   Name  . . . . :  GomitoSx
+   Matrix  . . . :  	0.766045	0.642787	3.55271e-15	-15.8056
+                    	-0.642787	0.766045	-0	0.543678
+                    	8.42967e-18	-3.55271e-15	1	-0.103297
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  559
+   Nr. faces . . :  960
+   Material  . . :  15 - Default
+   Radius  . . . :  4.20662
+   BBox minimum  :  -4.20661, -4.20661, -4.20661
+   BBox maximum  :  4.20661, 4.20661, 4.20661
+   Physics . . . :  0
+[chunk id: 18, chunk size: 856, chunk type: mesh]
+   Name  . . . . :  BraccioSx
+   Matrix  . . . :  	1	0	4.24818e-16	0.00539017
+                    	0	1	-0	0.00585938
+                    	8.42967e-18	-3.55271e-15	1	0.00385189
+                    	0	0	-0	1
+   Nr. children  :  2
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  36.5292
+   BBox minimum  :  -36.3401, -2.51044, -2.26799
+   BBox maximum  :  -1.63692, 2.19499, 2.73491
+   Physics . . . :  0
+[chunk id: 18, chunk size: 25070, chunk type: mesh]
+   Name  . . . . :  PolsoSx
+   Matrix  . . . :  	-0.939693	0.34202	4.24818e-16	-36.8618
+                    	-0.34202	-0.939693	-0	-0.00585938
+                    	-0	3.55271e-15	1	-0.00385189
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  559
+   Nr. faces . . :  960
+   Material  . . :  15 - Default
+   Radius  . . . :  4.20662
+   BBox minimum  :  -4.20661, -4.20661, -4.20661
+   BBox maximum  :  4.20661, 4.20661, 4.20661
+   Physics . . . :  0
+[chunk id: 18, chunk size: 853, chunk type: mesh]
+   Name  . . . . :  ManoSx
+   Matrix  . . . :  	1	0	-0	0.000522614
+                    	0	1	-0	0.00999451
+                    	-0	3.55271e-15	1	0.00012207
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  17.0951
+   BBox minimum  :  -16.2472, -1.63733, -4.99989
+   BBox maximum  :  -0.702202, 1.57023, 5.05864
+   Physics . . . :  0
+[chunk id: 18, chunk size: 1603, chunk type: mesh]
+   Name  . . . . :  AnterioreInfSx
+   Matrix  . . . :  	1	6.25849e-07	2.26718e-08	-18.8172
+                    	-8.04663e-07	1	-8.67584e-08	-0.0159302
+                    	1.08558e-08	1.14903e-07	1	0.0241785
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  44
+   Nr. faces . . :  34
+   Material  . . :  blackmetal
+   Radius  . . . :  41.3679
+   BBox minimum  :  -30.5821, -9.10563, -11.2114
+   BBox maximum  :  38.1324, -0.262603, 14.5271
+   Physics . . . :  0
+[chunk id: 18, chunk size: 6502, chunk type: mesh]
+   Name  . . . . :  RuotaAnterioreSx
+   Matrix  . . . :  	0.673307	0	-0	-11.9713
+                    	1.42109e-14	-1.09696e-07	-0.673307	-9.47182
+                    	3.03165e-15	0.673307	-1.09696e-07	13.5899
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  157
+   Nr. faces . . :  216
+   Material  . . :  Material #0
+   Radius  . . . :  11.3892
+   BBox minimum  :  -10.9965, -1.81203, -10.8295
+   BBox maximum  :  10.9965, 2.96484, 10.8295
+   Physics . . . :  0
+[chunk id: 18, chunk size: 858, chunk type: mesh]
+   Name  . . . . :  AvBraccioDx
+   Matrix  . . . :  	0.906308	-0.422618	-3.55271e-15	-3.42369
+                    	0.422618	0.906308	-0	-0.413101
+                    	-3.55271e-15	3.55271e-15	1	-11.2231
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  15.2498
+   BBox minimum  :  -14.8419, -2.26291, -2.51126
+   BBox maximum  :  -0.0240924, 2.44253, 2.49164
+   Physics . . . :  0
+[chunk id: 18, chunk size: 25071, chunk type: mesh]
+   Name  . . . . :  GomitoDx
+   Matrix  . . . :  	0.766045	0.642787	3.55271e-15	-15.8518
+                    	-0.642787	0.766045	-0	0.61879
+                    	8.42967e-18	-3.55271e-15	1	0.20107
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  559
+   Nr. faces . . :  960
+   Material  . . :  15 - Default
+   Radius  . . . :  4.23306
+   BBox minimum  :  -4.20662, -4.20661, -4.18017
+   BBox maximum  :  4.20661, 4.20661, 4.23306
+   Physics . . . :  0
+[chunk id: 18, chunk size: 856, chunk type: mesh]
+   Name  . . . . :  Bracciodx
+   Matrix  . . . :  	1	0	4.24818e-16	0.00746155
+                    	0	1	-0	0.00585938
+                    	8.42967e-18	-3.55271e-15	1	0.0259495
+                    	0	0	-0	1
+   Nr. children  :  2
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  36.5315
+   BBox minimum  :  -36.3421, -2.51044, -2.73827
+   BBox maximum  :  -1.63899, 2.19499, 2.26463
+   Physics . . . :  0
+[chunk id: 18, chunk size: 25070, chunk type: mesh]
+   Name  . . . . :  PolsoDx
+   Matrix  . . . :  	-0.939693	0.34202	4.24818e-16	-36.8639
+                    	-0.34202	-0.939693	-0	-0.00585938
+                    	-0	3.55271e-15	1	0.0734282
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  559
+   Nr. faces . . :  960
+   Material  . . :  15 - Default
+   Radius  . . . :  4.27955
+   BBox minimum  :  -4.20662, -4.20661, -4.27955
+   BBox maximum  :  4.20661, 4.20662, 4.13368
+   Physics . . . :  0
+[chunk id: 18, chunk size: 853, chunk type: mesh]
+   Name  . . . . :  ManoDx
+   Matrix  . . . :  	1	0	-0	0.000518799
+                    	0	1	-0	0.00999451
+                    	-0	3.55271e-15	1	-0.059082
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  17.0992
+   BBox minimum  :  -16.2472, -1.63733, -5.07261
+   BBox maximum  :  -0.702203, 1.57023, 4.98592
+   Physics . . . :  0
+[chunk id: 18, chunk size: 1603, chunk type: mesh]
+   Name  . . . . :  AnterioreInfDx
+   Matrix  . . . :  	1	6.25849e-07	2.26718e-08	-19.1778
+                    	-8.04663e-07	1	-8.67584e-08	-0.0650024
+                    	1.08558e-08	1.14903e-07	1	-0.458834
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  44
+   Nr. faces . . :  34
+   Material  . . :  blackmetal
+   Radius  . . . :  41.6358
+   BBox minimum  :  -30.1384, -9.05656, -14.1072
+   BBox maximum  :  38.5761, -0.213526, 11.6313
+   Physics . . . :  0
+[chunk id: 18, chunk size: 6598, chunk type: mesh]
+   Name  . . . . :  RuotaAnterioreDx
+   Matrix  . . . :  	0.673307	0	-0	-11.5275
+                    	1.42109e-14	-1.09696e-07	-0.673307	-9.42274
+                    	3.03165e-15	0.673307	-1.09696e-07	-0.00658607
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  161
+   Nr. faces . . :  216
+   Material  . . :  Material #0
+   Radius  . . . :  25.0571
+   BBox minimum  :  -10.9966, -22.5152, -10.8295
+   BBox maximum  :  10.9965, -17.7384, 10.8295
+   Physics . . . :  0
+[chunk id: 18, chunk size: 6468, chunk type: mesh]
+   Name  . . . . :  Collo
+   Matrix  . . . :  	3.27826e-07	-1	3.64616e-08	-7.94778
+                    	1	3.57628e-07	-3.78815e-08	-0.205933
+                    	-2.25914e-08	1.78858e-08	1	-0.00628728
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  156
+   Nr. faces . . :  216
+   Material  . . :  09 - Default
+   Radius  . . . :  7.83287
+   BBox minimum  :  -2.21822, 0, -2.18452
+   BBox maximum  :  2.21822, 7.51222, 2.18452
+   Physics . . . :  0
+[chunk id: 18, chunk size: 852, chunk type: mesh]
+   Name  . . . . :  Testa
+   Matrix  . . . :  	1	-1.49012e-08	-7.10543e-15	-0.130928
+                    	1.49012e-08	1	-1.77636e-15	5.55882
+                    	-1.77636e-15	-0	1	0.253485
+                    	0	0	-0	1
+   Nr. children  :  5
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  19.9416
+   BBox minimum  :  -3.75978, 3.20854e-08, -6.27233
+   BBox maximum  :  3.57945, 18.5524, 5.42549
+   Physics . . . :  0
+[chunk id: 18, chunk size: 25071, chunk type: mesh]
+   Name  . . . . :  OcchioSx
+   Matrix  . . . :  	0.258819	-3.23799e-07	-0.965926	-3.41776
+                    	0.965926	-4.43663e-08	0.258819	13.3692
+                    	-9.30656e-08	-1	3.01024e-07	2.5052
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  559
+   Nr. faces . . :  960
+   Material  . . :  13 - Default
+   Radius  . . . :  1.79983
+   BBox minimum  :  -1.79983, -1.79983, -1.79983
+   BBox maximum  :  1.79983, 1.79983, 1.79983
+   Physics . . . :  0
+[chunk id: 18, chunk size: 25071, chunk type: mesh]
+   Name  . . . . :  OcchioDx
+   Matrix  . . . :  	0.258819	-3.23799e-07	-0.965926	-3.41776
+                    	0.965926	-4.43663e-08	0.258819	13.3692
+                    	-9.30656e-08	-1	3.01024e-07	-3.01164
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  559
+   Nr. faces . . :  960
+   Material  . . :  13 - Default
+   Radius  . . . :  1.79983
+   BBox minimum  :  -1.79983, -1.79983, -1.79983
+   BBox maximum  :  1.79983, 1.79983, 1.79983
+   Physics . . . :  0
+[chunk id: 18, chunk size: 851, chunk type: mesh]
+   Name  . . . . :  Naso
+   Matrix  . . . :  	-0.258819	0.965926	5.10846e-07	-4.32671
+                    	-0.965926	-0.258819	-1.37363e-07	9.58038
+                    	-6.66666e-11	-4.62143e-07	1	0.334423
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  15 - Default
+   Radius  . . . :  3.65894
+   BBox minimum  :  -2.48281, -2.38419e-07, -2.09065
+   BBox maximum  :  1.47647, 2.37315, 0.652395
+   Physics . . . :  0
+[chunk id: 18, chunk size: 861, chunk type: mesh]
+   Name  . . . . :  SopraccigliaDx
+   Matrix  . . . :  	0.0669874	-0.997718	-0.00851847	-4.46514
+                    	0.25	0.00851858	0.968209	15.1595
+                    	-0.965926	-0.0669874	0.25	-3.00798
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  15 - Default
+   Radius  . . . :  2.6501
+   BBox minimum  :  -2.32754, -0.830765, -0.859447
+   BBox maximum  :  1.81994, 0.931122, 0.78708
+   Physics . . . :  0
+[chunk id: 18, chunk size: 861, chunk type: mesh]
+   Name  . . . . :  SopraccigliaSx
+   Matrix  . . . :  	-0.0885213	-0.99596	-0.0150767	-4.46514
+                    	-0.330366	0.015077	0.943733	15.1595
+                    	-0.939693	0.0885212	-0.330366	1.9074
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  15 - Default
+   Radius  . . . :  2.6501
+   BBox minimum  :  -2.32754, -0.830765, -0.859447
+   BBox maximum  :  1.81994, 0.931122, 0.78708
+   Physics . . . :  0
+[chunk id: 18, chunk size: 2371, chunk type: mesh]
+   Name  . . . . :  AnterioreSupDx
+   Matrix  . . . :  	0.965926	0.258819	2.32154e-08	0.665401
+                    	-0.258819	0.965926	-2.75538e-09	-11.652
+                    	-2.22062e-08	-4.53887e-09	1	-26.0754
+                    	0	0	-0	1
+   Nr. children  :  3
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  76
+   Nr. faces . . :  34
+   Material  . . :  blackmetal
+   Radius  . . . :  73.6481
+   BBox minimum  :  -68.7338, -0.185633, -1.00703
+   BBox maximum  :  0.0224457, 18.5718, 26.2103
+   Physics . . . :  0
+[chunk id: 18, chunk size: 669, chunk type: mesh]
+   Name  . . . . :  FinestrinoAntDx
+   Matrix  . . . :  	1	0	2.26719e-08	0.222223
+                    	2.84217e-14	0.552589	-7.10543e-15	33.9253
+                    	-2.26719e-08	3.55271e-15	1	-0.792942
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  18
+   Nr. faces . . :  8
+   Material  . . :  Material #0
+   Radius  . . . :  71.7338
+   BBox minimum  :  -49.9338, -51.5005, 0.014183
+   BBox maximum  :  0.0530167, -30.2297, 9.08848
+   Physics . . . :  0
+[chunk id: 18, chunk size: 1286, chunk type: mesh]
+   Name  . . . . :  CofanoDx
+   Matrix  . . . :  	1	0	2.26719e-08	-0.0910196
+                    	2.84217e-14	0.552589	-0	-0.138367
+                    	-2.26719e-08	-0	1	-0.72076
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  40
+   Nr. faces . . :  16
+   Material  . . :  Material #0
+   Radius  . . . :  59.0653
+   BBox minimum  :  -49.9525, 13.8188, 3.68322
+   BBox maximum  :  -1.53482, 33.8121, 26.7727
+   Physics . . . :  0
+[chunk id: 18, chunk size: 910, chunk type: mesh]
+   Name  . . . . :  FaroAnterioreDx
+   Matrix  . . . :  	3.13914e-07	-1	-4.65648e-10	-68.7983
+                    	1	3.13856e-07	3.607e-08	4.40526
+                    	2.22155e-08	4.65645e-10	1	8.99692
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  20
+   Nr. faces . . :  24
+   Material  . . :  13 - Default
+   Radius  . . . :  16.9435
+   BBox minimum  :  -0.395748, -5.06837, -9.79958
+   BBox maximum  :  0.791496, 0, 16.925
+   Physics . . . :  0
+[chunk id: 18, chunk size: 2371, chunk type: mesh]
+   Name  . . . . :  AnterioreSupSx
+   Matrix  . . . :  	0.965926	0.258819	-0	0.66251
+                    	-0.258819	0.965926	-0	-11.7875
+                    	-5.41857e-15	-0	1	28.0157
+                    	0	0	-0	1
+   Nr. children  :  3
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  76
+   Nr. faces . . :  34
+   Material  . . :  blackmetal
+   Radius  . . . :  74.43
+   BBox minimum  :  -68.766, -0.0418439, -28.2458
+   BBox maximum  :  -0.00982285, 18.7156, -1.02852
+   Physics . . . :  0
+[chunk id: 18, chunk size: 998, chunk type: mesh]
+   Name  . . . . :  CofanoSx
+   Matrix  . . . :  	1	0	2.26719e-08	-0.0266705
+                    	0	0.552589	7.10543e-15	-0.0191269
+                    	-2.26719e-08	-0	1	-1.05076
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  28
+   Nr. faces . . :  16
+   Material  . . :  Material #0
+   Radius  . . . :  59.2795
+   BBox minimum  :  -50.0491, 13.8632, -27.0367
+   BBox maximum  :  -1.63144, 33.8566, -3.94725
+   Physics . . . :  0
+[chunk id: 18, chunk size: 670, chunk type: mesh]
+   Name  . . . . :  FinestrinoAntSx
+   Matrix  . . . :  	1	0	2.26719e-08	0.252178
+                    	0	0.552589	-0	34.069
+                    	-2.26719e-08	3.55271e-15	1	-1.27307
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  18
+   Nr. faces . . :  8
+   Material  . . :  03 - Default
+   Radius  . . . :  71.777
+   BBox minimum  :  -49.996, -51.5005, -9.058
+   BBox maximum  :  -0.00920486, -30.2297, 0.0162926
+   Physics . . . :  0
+[chunk id: 18, chunk size: 910, chunk type: mesh]
+   Name  . . . . :  FaroAnterioreSx
+   Matrix  . . . :  	7.90693e-07	-1	2.26719e-08	-68.8306
+                    	1	7.90693e-07	1.0463e-08	4.5369
+                    	1.16865e-08	1.89465e-08	1	-10.9998
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  20
+   Nr. faces . . :  24
+   Material  . . :  13 - Default
+   Radius  . . . :  16.9435
+   BBox minimum  :  -0.395748, -5.06837, -16.925
+   BBox maximum  :  0.791496, 0, 9.79958
+   Physics . . . :  0
+[chunk id: 18, chunk size: 853, chunk type: mesh]
+   Name  . . . . :  Bacino
+   Matrix  . . . :  	-3.268e-07	-1.66318e-07	1.38889	0.0304012
+                    	-1.36779	0.21706	-2.89745e-07	-44.4861
+                    	-0.241178	-1.23101	-2.38738e-07	0.141861
+                    	0	0	-0	1
+   Nr. children  :  2
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  19.1142
+   BBox minimum  :  -0.991077, -4.27957, -16.7814
+   BBox maximum  :  7.74528, 4.87351, 15.0141
+   Physics . . . :  0
+[chunk id: 18, chunk size: 855, chunk type: mesh]
+   Name  . . . . :  FemoreSx
+   Matrix  . . . :  	0.984808	-0.173648	-1.02604e-07	2.67129
+                    	0.173648	0.984808	8.60946e-08	-0.985031
+                    	8.60946e-08	-1.02604e-07	1	11.2649
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  24.0482
+   BBox minimum  :  -23.8006, -2.3642, -2.50172
+   BBox maximum  :  0.0305665, 2.34124, 2.50117
+   Physics . . . :  0
+[chunk id: 18, chunk size: 25074, chunk type: mesh]
+   Name  . . . . :  GinocchioSx
+   Matrix  . . . :  	-0.984808	-0.173648	-0	-24.6358
+                    	0.173648	-0.984808	-1.42109e-14	0.141815
+                    	-2.75757e-15	-2.84217e-14	1	-0.237595
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  559
+   Nr. faces . . :  960
+   Material  . . :  15 - Default
+   Radius  . . . :  4.20662
+   BBox minimum  :  -4.20661, -4.20661, -4.20661
+   BBox maximum  :  4.20661, 4.20661, 4.20661
+   Physics . . . :  0
+[chunk id: 18, chunk size: 855, chunk type: mesh]
+   Name  . . . . :  PeroneSx
+   Matrix  . . . :  	1	0	-9.35788e-16	0.00119114
+                    	1.42109e-14	1	1.42109e-14	0.00585175
+                    	7.95144e-16	-1.42109e-14	1	-0.0240364
+                    	0	0	-0	1
+   Nr. children  :  2
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  40.8187
+   BBox minimum  :  -40.6476, -2.51044, -2.2401
+   BBox maximum  :  -1.07618, 2.195, 2.7628
+   Physics . . . :  0
+[chunk id: 18, chunk size: 23993, chunk type: mesh]
+   Name  . . . . :  CavigliaSx
+   Matrix  . . . :  	-0.866025	-0.5	-9.35788e-16	-41.4371
+                    	0.5	-0.866025	1.42109e-14	-0.00585175
+                    	-0	-0	1	0.0240374
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  514
+   Nr. faces . . :  960
+   Material  . . :  15 - Default
+   Radius  . . . :  4.20662
+   BBox minimum  :  -4.20661, -4.20661, -4.20661
+   BBox maximum  :  4.20661, 4.20661, 4.20661
+   Physics . . . :  0
+[chunk id: 18, chunk size: 854, chunk type: mesh]
+   Name  . . . . :  PiedeSx
+   Matrix  . . . :  	1	0	-7.10543e-15	0.000522614
+                    	0	1	-0	0.00999451
+                    	-1.42109e-14	1.42109e-14	1	0.00012207
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  17.0951
+   BBox minimum  :  -16.2472, -1.63733, -4.99989
+   BBox maximum  :  -0.702202, 1.57023, 5.05864
+   Physics . . . :  0
+[chunk id: 18, chunk size: 1292, chunk type: mesh]
+   Name  . . . . :  PosterioreInfSx
+   Matrix  . . . :  	-1	2.84217e-14	-1.50996e-07	-21.6265
+                    	-1.42109e-14	-1	-1.50996e-07	0.0348053
+                    	-1.50996e-07	-1.50996e-07	1	0.0304918
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  36
+   Nr. faces . . :  24
+   Material  . . :  blackmetal
+   Radius  . . . :  30.5849
+   BBox minimum  :  -25.9516, -8.86605, -10.8472
+   BBox maximum  :  25.606, -0.0230193, 14.8876
+   Physics . . . :  0
+[chunk id: 18, chunk size: 6476, chunk type: mesh]
+   Name  . . . . :  RuotaPostInfSx
+   Matrix  . . . :  	0.673307	4.34328e-15	1.42109e-14	3.51765
+                    	0	-1.09696e-07	-0.673307	-9.23223
+                    	3.19554e-15	0.673307	-1.09696e-07	12.7075
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  156
+   Nr. faces . . :  216
+   Material  . . :  Material #0
+   Radius  . . . :  11.9893
+   BBox minimum  :  -10.9965, 0, -10.8295
+   BBox maximum  :  10.9965, 4.77687, 10.8295
+   Physics . . . :  0
+[chunk id: 18, chunk size: 855, chunk type: mesh]
+   Name  . . . . :  FemoreDx
+   Matrix  . . . :  	0.984808	-0.173648	-1.02604e-07	2.6839
+                    	0.173648	0.984808	8.60946e-08	-0.983269
+                    	8.60946e-08	-1.02604e-07	1	-11.6867
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  24.1268
+   BBox minimum  :  -23.8133, -2.36374, -1.9305
+   BBox maximum  :  0.017838, 2.3417, 3.0724
+   Physics . . . :  0
+[chunk id: 18, chunk size: 25074, chunk type: mesh]
+   Name  . . . . :  GinocchioDx
+   Matrix  . . . :  	-0.984808	-0.173648	-0	-24.6485
+                    	0.173648	-0.984808	-1.42109e-14	0.142273
+                    	-2.75757e-15	-2.84217e-14	1	0.845934
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  559
+   Nr. faces . . :  960
+   Material  . . :  15 - Default
+   Radius  . . . :  4.24429
+   BBox minimum  :  -4.20662, -4.20661, -4.24429
+   BBox maximum  :  4.20662, 4.20661, 4.16894
+   Physics . . . :  0
+[chunk id: 18, chunk size: 855, chunk type: mesh]
+   Name  . . . . :  PeroneDx
+   Matrix  . . . :  	1	0	-9.35788e-16	-0.00439835
+                    	1.42109e-14	1	1.42109e-14	0.00585175
+                    	7.95144e-16	-1.42109e-14	1	-0.0230131
+                    	0	0	-0	1
+   Nr. children  :  2
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  40.8125
+   BBox minimum  :  -40.642, -2.51044, -2.75343
+   BBox maximum  :  -1.07059, 2.195, 2.24947
+   Physics . . . :  0
+[chunk id: 18, chunk size: 25073, chunk type: mesh]
+   Name  . . . . :  CavigliaDx
+   Matrix  . . . :  	-0.866025	-0.5	-9.35788e-16	-41.4315
+                    	0.5	-0.866025	1.42109e-14	-0.00585175
+                    	-0	-0	1	-0.0353117
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  559
+   Nr. faces . . :  960
+   Material  . . :  15 - Default
+   Radius  . . . :  4.22727
+   BBox minimum  :  -4.20662, -4.20661, -4.18596
+   BBox maximum  :  4.20661, 4.20661, 4.22727
+   Physics . . . :  0
+[chunk id: 18, chunk size: 854, chunk type: mesh]
+   Name  . . . . :  PiedeDx
+   Matrix  . . . :  	1	0	-7.10543e-15	0.0020752
+                    	0	1	-0	0.00730896
+                    	-1.42109e-14	1.42109e-14	1	-0.0302076
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  09 - Default
+   Radius  . . . :  17.0939
+   BBox minimum  :  -16.2488, -1.63464, -5.0079
+   BBox maximum  :  -0.703752, 1.57292, 5.05063
+   Physics . . . :  0
+[chunk id: 18, chunk size: 1292, chunk type: mesh]
+   Name  . . . . :  PosterioreInfDx
+   Matrix  . . . :  	-1	2.84217e-14	-1.50996e-07	-21.0393
+                    	-1.42109e-14	-1	-1.50996e-07	-0.0568848
+                    	-1.50996e-07	-1.50996e-07	1	-0.0979147
+                    	0	0	-0	1
+   Nr. children  :  1
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  36
+   Nr. faces . . :  24
+   Material  . . :  blackmetal
+   Radius  . . . :  30.3643
+   BBox minimum  :  -25.6998, -8.95775, -14.8108
+   BBox maximum  :  25.8578, -0.114698, 10.924
+   Physics . . . :  0
+[chunk id: 18, chunk size: 6545, chunk type: mesh]
+   Name  . . . . :  RuotaPostDx
+   Matrix  . . . :  	0.673307	4.34328e-15	1.42109e-14	3.76946
+                    	0	-1.09696e-07	-0.673307	-9.32392
+                    	3.19554e-15	0.673307	-1.09696e-07	7.70772
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  159
+   Nr. faces . . :  216
+   Material  . . :  Material #0
+   Radius  . . . :  36.6712
+   BBox minimum  :  -10.9965, -34.9836, -10.8295
+   BBox maximum  :  10.9966, -30.2068, 10.8295
+   Physics . . . :  0
+[chunk id: 18, chunk size: 3498, chunk type: mesh]
+   Name  . . . . :  PosterioreSup
+   Matrix  . . . :  	-0.00138563	0.0105918	1.32195	37.3192
+                    	-1.36786	0.216595	-0.00287124	-9.86765
+                    	-0.240774	-1.23105	0.00870772	13.2758
+                    	0	0	-0	1
+   Nr. children  :  2
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  120
+   Nr. faces . . :  40
+   Material  . . :  blackmetal
+   Radius  . . . :  62.4693
+   BBox minimum  :  -0.0720882, -0.0963306, -28.2277
+   BBox maximum  :  54.7929, 18.6673, -0.060029
+   Physics . . . :  0
+[chunk id: 18, chunk size: 862, chunk type: mesh]
+   Name  . . . . :  FinestrinoPostSx
+   Matrix  . . . :  	1	1.45519e-11	6.41194e-11	-0.0432591
+                    	0	0.552589	-0	0.095459
+                    	-3.41061e-12	-0	1.0506	2.15146
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  Material #0
+   Radius  . . . :  34.2625
+   BBox minimum  :  0.188706, 15.0923, -11.2644
+   BBox maximum  :  19.8867, 31.4531, -2.22274
+   Physics . . . :  0
+[chunk id: 18, chunk size: 455, chunk type: mesh]
+   Name  . . . . :  FaroPosterioreSx
+   Matrix  . . . :  	-0.422321	0.906446	-0.000997336	54.686
+                    	-0.906423	-0.422302	0.00762624	9.53915
+                    	0.00681996	0.00433341	1.05057	-14.0043
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  9
+   Nr. faces . . :  8
+   Material  . . :  08 - Default
+   Radius  . . . :  13.5212
+   BBox minimum  :  -0.704263, -0.228183, -13.5009
+   BBox maximum  :  0.358323, 0.0403051, 13.203
+   Physics . . . :  0
+[chunk id: 18, chunk size: 3500, chunk type: mesh]
+   Name  . . . . :  PosterioreSupDx
+   Matrix  . . . :  	-0.00138563	0.0105918	1.32195	-37.227
+                    	-1.36786	0.216595	-0.00287124	-9.67772
+                    	-0.240774	-1.23105	0.00870772	13.3093
+                    	0	0	-0	1
+   Nr. children  :  2
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  120
+   Nr. faces . . :  40
+   Material  . . :  blackmetal
+   Radius  . . . :  62.5245
+   BBox minimum  :  -0.0569668, -0.0818832, -0.0727234
+   BBox maximum  :  54.8558, 19.075, 28.3386
+   Physics . . . :  0
+[chunk id: 18, chunk size: 862, chunk type: mesh]
+   Name  . . . . :  FinestrinoPostDx
+   Matrix  . . . :  	1	1.45519e-11	6.41194e-11	0.264252
+                    	0	0.552589	-0	22.7265
+                    	-3.41061e-12	-0	1.0506	-0.0608444
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  24
+   Nr. faces . . :  12
+   Material  . . :  Material #0
+   Radius  . . . :  31.5268
+   BBox minimum  :  -0.0739355, -25.8589, 0.105509
+   BBox maximum  :  19.6317, -8.82582, 9.02393
+   Physics . . . :  0
+[chunk id: 18, chunk size: 455, chunk type: mesh]
+   Name  . . . . :  FaroPosterioreDx
+   Matrix  . . . :  	-0.422321	0.906446	-0.000997336	54.7983
+                    	-0.906423	-0.422302	0.00762624	9.74211
+                    	0.00681996	0.00433341	1.05057	13.9517
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  9
+   Nr. faces . . :  8
+   Material  . . :  08 - Default
+   Radius  . . . :  13.5275
+   BBox minimum  :  -0.713727, -0.19796, -13.1997
+   BBox maximum  :  0.358323, 0.0403051, 13.5197
+   Physics . . . :  0
+[chunk id: 16, chunk size: 122, chunk type: light]
+   Name  . . . . :  Omni004
+   Matrix  . . . :  	1	0	-0	-92.6068
+                    	0	1	-0	157.573
+                    	-0	-0	1	63.9753
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (лллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллллл)
+   Color . . . . :  1, 1, 1
+   Radius  . . . :  200
+   Direction . . :  0, 0, 0
+   Cutoff  . . . :  180
+   Spot exponent :  0
+   Cast shadows  :  0
+   Volumetric  . :  0
+[chunk id: 18, chunk size: 1929756, chunk type: mesh]
+   Name  . . . . :  Piano
+   Matrix  . . . :  	1	0	-0	-207.777
+                    	0	1	-0	0
+                    	-0	-0	1	6.15466
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  40401
+   Nr. faces . . :  80000
+   Material  . . :  07 - Default
+   Radius  . . . :  1521.97
+   BBox minimum  :  -1068.15, 0, -1084.18
+   BBox maximum  :  1068.15, 0, 1084.18
+   Physics . . . :  0
+[chunk id: 18, chunk size: 31528, chunk type: mesh]
+   Name  . . . . :  Teapot001
+   Matrix  . . . :  	-0.906308	0	-0.422618	542.161
+                    	0	1	-0	0
+                    	0.422618	-0	-0.906308	374.312
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  796
+   Nr. faces . . :  1024
+   Material  . . :  21 - Default
+   Radius  . . . :  215.842
+   BBox minimum  :  -153.095, 0, -102.063
+   BBox maximum  :  174.943, 160.749, 102.063
+   Physics . . . :  0
+[chunk id: 18, chunk size: 21377, chunk type: mesh]
+   Name  . . . . :  Pyramid001
+   Matrix  . . . :  	0.819152	0	-0.573576	612.215
+                    	0	1	-0	0
+                    	0.573576	-0	0.819152	-717.274
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  485
+   Nr. faces . . :  800
+   Material  . . :  04 - Default
+   Radius  . . . :  234.055
+   BBox minimum  :  -189.923, 0, -136.789
+   BBox maximum  :  189.923, 228.352, 136.789
+   Physics . . . :  0
+[chunk id: 18, chunk size: 21377, chunk type: mesh]
+   Name  . . . . :  Pyramid002
+   Matrix  . . . :  	1	0	-0	410.014
+                    	0	1	-0	0
+                    	-0	-0	1	-524.525
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  485
+   Nr. faces . . :  800
+   Material  . . :  04 - Default
+   Radius  . . . :  120.709
+   BBox minimum  :  -90.6266, 0, -79.7338
+   BBox maximum  :  90.6266, 110.996, 79.7338
+   Physics . . . :  0
+[chunk id: 18, chunk size: 21377, chunk type: mesh]
+   Name  . . . . :  Pyramid003
+   Matrix  . . . :  	0.939693	0	0.34202	571.017
+                    	0	1	-0	0
+                    	-0.34202	-0	0.939693	-299.482
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  485
+   Nr. faces . . :  800
+   Material  . . :  04 - Default
+   Radius  . . . :  219.213
+   BBox minimum  :  -174.655, 0, -132.476
+   BBox maximum  :  174.655, 198.969, 132.476
+   Physics . . . :  0
+[chunk id: 18, chunk size: 25744, chunk type: mesh]
+   Name  . . . . :  Sphere001
+   Matrix  . . . :  	0.54	0	-0	765.673
+                    	0	0.54	-0	341.55
+                    	-0	-0	0.54	-493.847
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (standard)
+   Nr. vertices  :  587
+   Nr. faces . . :  960
+   Material  . . :  20 - Default
+   Radius  . . . :  175.204
+   BBox minimum  :  -175.204, -175.204, -175.204
+   BBox maximum  :  175.204, 175.204, 175.204
+   Physics . . . :  0
+[chunk id: 16, chunk size: 122, chunk type: light]
+   Name  . . . . :  Omni005
+   Matrix  . . . :  	1	0	-0	-92.6068
+                    	0	1	-0	157.573
+                    	-0	-0	1	-60.0315
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (omni)
+   Color . . . . :  1, 1, 1
+   Radius  . . . :  200
+   Direction . . :  0, 0, 0
+   Cutoff  . . . :  180
+   Spot exponent :  0
+   Cast shadows  :  0
+   Volumetric  . :  0
+[chunk id: 16, chunk size: 122, chunk type: light]
+   Name  . . . . :  Omni006
+   Matrix  . . . :  	1	0	-0	96.692
+                    	0	1	-0	157.573
+                    	-0	-0	1	-60.0315
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (omni)
+   Color . . . . :  1, 1, 1
+   Radius  . . . :  200
+   Direction . . :  0, 0, 0
+   Cutoff  . . . :  180
+   Spot exponent :  0
+   Cast shadows  :  0
+   Volumetric  . :  0
+[chunk id: 16, chunk size: 122, chunk type: light]
+   Name  . . . . :  Omni007
+   Matrix  . . . :  	1	0	-0	96.692
+                    	0	1	-0	157.573
+                    	-0	-0	1	63.9753
+                    	0	0	-0	1
+   Nr. children  :  0
+   Target node . :  [none]
+   Subtype . . . :  0 (omni)
+   Color . . . . :  1, 1, 1
+   Radius  . . . :  200
+   Direction . . :  0, 0, 0
+   Cutoff  . . . :  180
+   Spot exponent :  0
+   Cast shadows  :  0
+   Volumetric  . :  0

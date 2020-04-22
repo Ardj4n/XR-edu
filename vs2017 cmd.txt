@@ -1,0 +1,3 @@
+build events
+     post build
+          xcopy ..\dependencies\openvr\bin\$(Platform)\$(Configuration)\openvr_api64.dll $(OutDir) /Y > nul

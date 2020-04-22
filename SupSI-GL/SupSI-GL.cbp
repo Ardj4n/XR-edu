@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="SupSI-GL" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="SupSI-GL" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-fPIC" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="SupSI-GL" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-fPIC" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fPIC" />
+			<Add option="-fexceptions" />
+			<Add directory="../dependencies/glm/include" />
+			<Add directory="../dependencies/freeimage/include" />
+			<Add directory="../dependencies/freeglut/include" />
+		</Compiler>
+		<Linker>
+			<Add library="glut" />
+			<Add library="freeimage" />
+			<Add library="GL" />
+		</Linker>
+		<Unit filename="Camera.cpp" />
+		<Unit filename="Camera.h" />
+		<Unit filename="Engine.cpp" />
+		<Unit filename="Engine.h" />
+		<Unit filename="Face.cpp" />
+		<Unit filename="Face.h" />
+		<Unit filename="Light.cpp" />
+		<Unit filename="Light.h" />
+		<Unit filename="List.cpp" />
+		<Unit filename="List.h" />
+		<Unit filename="Material.cpp" />
+		<Unit filename="Material.h" />
+		<Unit filename="Mesh.cpp" />
+		<Unit filename="Mesh.h" />
+		<Unit filename="Node.cpp" />
+		<Unit filename="Node.h" />
+		<Unit filename="Object.cpp" />
+		<Unit filename="Object.h" />
+		<Unit filename="OvoReader.cpp" />
+		<Unit filename="OvoReader.h" />
+		<Unit filename="Texture.cpp" />
+		<Unit filename="Texture.h" />
+		<Unit filename="Vertex.cpp" />
+		<Unit filename="Vertex.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

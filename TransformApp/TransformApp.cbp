@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="TransformApp" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/TransformApp" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="../SupSI-GL" />
+				</Compiler>
+				<Linker>
+					<Add directory="../SupSI-GL/bin/Debug" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/TransformApp" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add directory="../SupSI-GL/bin/Release" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="../SupSI-GL" />
+			<Add directory="../dependencies/glm/include" />
+		</Compiler>
+		<Linker>
+			<Add library="SupSI-GL" />
+			<Add library="freeimage" />
+			<Add directory="../SupSI-GL" />
+		</Linker>
+		<Unit filename="../SupSI-GL/Camera.h" />
+		<Unit filename="../SupSI-GL/Light.h" />
+		<Unit filename="../SupSI-GL/Material.h" />
+		<Unit filename="../SupSI-GL/Mesh.h" />
+		<Unit filename="../SupSI-GL/Node.h" />
+		<Unit filename="../SupSI-GL/Object.h" />
+		<Unit filename="../SupSI-GL/Texture.h" />
+		<Unit filename="../SupSI-GL/Vertex.h" />
+		<Unit filename="MainApplication.cpp" />
+		<Unit filename="MainApplication.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
