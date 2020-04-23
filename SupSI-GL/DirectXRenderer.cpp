@@ -9,8 +9,7 @@
 
 using namespace std;
 
-
-char dxShader[] = R"(
+char dxShader[]  = R"(
 cbuffer constants : register(b0)
 {
 	row_major float4x4 transform;
@@ -55,6 +54,7 @@ float4 ps_main(vs_out input) : SV_TARGET
 }
 )";
 
+//DirectX compatible structures for vertex buffers and matrices
 struct matrix { float m[4][4]; };
 struct float3 { float x, y, z; };
 struct Constants
@@ -64,6 +64,7 @@ struct Constants
 	float3 LightVector;
 };
 
+//Creates Orthogonal left handed camera
 matrix inline createOrthoLH
 (
 	float ViewWidth,
@@ -106,6 +107,7 @@ DirectXRenderer::~DirectXRenderer()
 {
 }
 
+//extension that must be enabled before calling xrCreateInstance
 std::string DirectXRenderer::getRenderExtensionName()
 {
 	return XR_KHR_D3D11_ENABLE_EXTENSION_NAME;
@@ -120,7 +122,6 @@ bool DirectXRenderer::initPlatformResources(int width, int heigth)
 	//			DIRECTX SHADERS
 	ID3DBlob* vsBlob;
 	D3DCompile(dxShader, sizeof(dxShader), nullptr, nullptr, nullptr, "vs_main", "vs_5_0", 0, 0, &vsBlob, nullptr);
-	//D3DCompileFromFile(L"shaders.hlsl", nullptr, nullptr, "vs_main", "vs_5_0", 0, 0, &vsBlob, nullptr);
 
 	dxDevice->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &vertexShader);
 
@@ -136,7 +137,6 @@ bool DirectXRenderer::initPlatformResources(int width, int heigth)
 
 	ID3DBlob* psBlob;
 	D3DCompile(dxShader, sizeof(dxShader), nullptr, nullptr, nullptr, "ps_main", "ps_5_0", 0, 0, &psBlob, nullptr);
-	//D3DCompileFromFile(L"shaders.hlsl", nullptr, nullptr, "ps_main", "ps_5_0", 0, 0, &psBlob, nullptr);
 
 	dxDevice->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &pixelShader);
 
@@ -165,6 +165,7 @@ bool DirectXRenderer::initPlatformResources(int width, int heigth)
 	//			DIRECTX BUFFERS
 	float sizeX = width / 2.f;
 	float sizeY = heigth / 2.f;
+	//DirectX pasthrough box vertices
 	float VertexData[] = // float3 position, float3 normal, float2 texcoord, float4 color
 	{
 		 sizeX,  sizeY,	 0.0f,		0.0f,  0.0f, -1.0f,		1.0f,  1.0f,	1.f,  1.f,  1.f,  1.000f,
@@ -173,12 +174,14 @@ bool DirectXRenderer::initPlatformResources(int width, int heigth)
 		 sizeX,  -sizeY, 0.0f,		0.0f,  0.0f, -1.0f,		1.0f,  0.0f,	1.f,  1.f,  1.f,  1.000f,
 	};
 
+	//DirectX pasthrough box faces
 	unsigned int IndexData[] =
 	{
 		  2,   1,   0,
 		  2,   0,   3,
 	};
 
+	//Load buffer's data in gpu memory (vertex array object and face data object)
 	D3D11_BUFFER_DESC constantBufferDesc = {};
 	constantBufferDesc.ByteWidth = sizeof(Constants) + 0xf & 0xfffffff0;
 	constantBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
@@ -203,6 +206,8 @@ bool DirectXRenderer::initPlatformResources(int width, int heigth)
 	D3D11_SUBRESOURCE_DATA indexData = { IndexData };
 	dxDevice->CreateBuffer(&indexBufferDesc, &indexData, &indexBuffer);
 
+	/////////////////////////////////////////
+	//			INTEROP INIT
 	initInterop();
 
 	return true;
@@ -211,6 +216,7 @@ bool DirectXRenderer::initPlatformResources(int width, int heigth)
 bool DirectXRenderer::free()
 {
 	for (int i = 0; i < swapchains.size(); i++) {
+		// destroy each swapchain created by OpenXR
 		xrDestroySwapchain(swapchains[i].handle);
 		for (uint32_t j = 0; j < swapchains[i].surfaceData.size(); j++) {
 			swapchains[i].surfaceData[j].depthView->Release();
@@ -219,6 +225,7 @@ bool DirectXRenderer::free()
 	}
 	swapchains.clear();
 
+	// free interop resources
 	if (textureHandle)		{ wglDXUnregisterObjectNV(interopHandle, textureHandle); }
 	if (interopHandle)		{ wglDXCloseDeviceNV(interopHandle); }
 
@@ -226,6 +233,7 @@ bool DirectXRenderer::free()
 	if (rboDepthId)			{ glDeleteRenderbuffers(1, &rboDepthId); }
 	if (fboId)				{ glDeleteFramebuffers(1, &fboId); }
 
+	// free DirectX resources
 	if (dxSwapchain)		{ dxSwapchain->Release(); dxSwapchain = nullptr; }
 	if (dxTexture)			{ dxTexture->Release(); dxTexture = nullptr; }
 	if (dxTextureResource)	{ dxTextureResource->Release(); dxTextureResource = nullptr; }
@@ -248,19 +256,24 @@ bool DirectXRenderer::free()
 
 bool DirectXRenderer::beginEyeFrame(int eye, int textureIndex)
 {
+	// reset DirectX viewport
 	D3D11_VIEWPORT viewport = CD3D11_VIEWPORT(0.f, 0.f, (float)sizeX, (float)sizeY);
 	dxContext->RSSetViewports(1, &viewport);
 
+	// get collection of DirectX render target view and depth view
 	DXSwapchainSurface surface = swapchains[eye].surfaceData[textureIndex];
 
-	// Wipe our swapchain color and depth target clean, and then set them up for rendering!
+	//clear color and depth buffer
 	float clear[] = { 0, 0, 0, 1 };
 	dxContext->ClearRenderTargetView(surface.targetView, clear);
 	dxContext->ClearDepthStencilView(surface.depthView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	// set the new render target view associated to the current OpenXR render buffer
 	dxContext->OMSetRenderTargets(1, &surface.targetView, surface.depthView);
 
+	// wglDXLockObjectsNV enables rendering with OpenGL in a shared texture  
 	bool ok = wglDXLockObjectsNV(interopHandle, 1, &textureHandle);
 
+	// set fbo FBO and viewport so the application is ready to render
 	glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 	glDrawBuffer(GL_COLOR_ATTACHMENT0);
 	glViewport(0, 0, sizeX, sizeY);
@@ -271,31 +284,32 @@ bool DirectXRenderer::beginEyeFrame(int eye, int textureIndex)
 bool DirectXRenderer::endEyeRender(int eye, int textureIndex)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//wglDXUnlockObjectsNV disables rendering with OpenGL
 	bool ok = wglDXUnlockObjectsNV(interopHandle, 1, &textureHandle);
 
+	/////////////////////////////////////////
+	// DirectX passthroug
 	D3D11_MAPPED_SUBRESOURCE mappedSubresource;
 	dxContext->Map(constantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedSubresource);
 
 	Constants* constants = reinterpret_cast<Constants*>(mappedSubresource.pData);
 
-	//constants->Transform = rotateX * rotateY * rotateZ * scale * translate;
+	//set modelview matrix as identity
 	matrix identity;
 	ZeroMemory(&identity, sizeof(identity));
 	identity.m[0][0] = identity.m[1][1] = identity.m[2][2] = identity.m[3][3] = 1.f;
 	constants->Transform = identity;
+	//set orthogonal projection matrix matrix 
 	constants->Projection = createOrthoLH(sizeX, sizeY, -1.f, 1.f);
 	constants->LightVector = { 1.0f, -1.0f, 1.0f };
 
 	dxContext->Unmap(constantBuffer, 0);
 
-	///////////////////////////////////////////////////////////////////////////////////////////
-
+	// activate vertex and face buffers 
 	FLOAT backgroundColor[4] = { 0.025f, 0.025f, 0.025f, 1.0f };
 
 	UINT stride = 12 * 4; // vertex size (12 floats: float3 position, float3 normal, float2 texcoord, float4 color)
 	UINT offset = 0;
-
-	///////////////////////////////////////////////////////////////////////////////////////////
 
 	dxContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	dxContext->IASetInputLayout(inputLayout);
@@ -311,12 +325,7 @@ bool DirectXRenderer::endEyeRender(int eye, int textureIndex)
 	dxContext->PSSetShaderResources(0, 1, &dxTextureResource);
 	dxContext->PSSetSamplers(0, 1, &samplerState);
 
-	//d3d_context->OMSetRenderTargets(1, &frameBufferView, depthBufferView);
-
-	//d3d_context->OMSetDepthStencilState(depthStencilState, 0);
-	//d3d_context->OMSetBlendState(blendState, nullptr, 0xffffffff);
-
-	///////////////////////////////////////////////////////////////////////////////////////////
+	// draw triangles 
 	dxContext->DrawIndexed(6, 0, 0);
 
 	return true;
@@ -326,6 +335,7 @@ void * DirectXRenderer::getGraphicsBinding(XrInstance &xrInstance, XrSystemId &x
 {
 	XrGraphicsBindingD3D11KHR* dxGraphicsBinding = new XrGraphicsBindingD3D11KHR{};
 
+	// Load method enabled by XR_USE_GRAPHICS_API_D3D11
 	PFN_xrGetD3D11GraphicsRequirementsKHR getD3D11GraphicsRequirements;
 	xrGetInstanceProcAddr(xrInstance, "xrGetD3D11GraphicsRequirementsKHR",
 		reinterpret_cast<PFN_xrVoidFunction*>(&getD3D11GraphicsRequirements));
@@ -334,6 +344,9 @@ void * DirectXRenderer::getGraphicsBinding(XrInstance &xrInstance, XrSystemId &x
 	dxRequirements.type = XR_TYPE_GRAPHICS_REQUIREMENTS_D3D11_KHR;
 	dxRequirements.next = nullptr;
 
+	// The OpenXR runtime requires getD3D11GraphicsRequirements to be called before creating an XrSession in Windows
+	// this method populates an XrGraphicsRequirementsD3D11KHR structure which contains the adapter LUID neccessary to create 
+	// the DirectX device
 	getD3D11GraphicsRequirements(xrInstance, xrSystem, &dxRequirements);
 
 	unsigned int i = 0;
@@ -341,6 +354,7 @@ void * DirectXRenderer::getGraphicsBinding(XrInstance &xrInstance, XrSystemId &x
 	IDXGIFactory1* dxgiFactory;
 	CreateDXGIFactory1(__uuidof(IDXGIFactory1), reinterpret_cast<void**>(&dxgiFactory));
 
+	// Loop through available adapters until the one with the returned LUID is found
 	DXGI_ADAPTER_DESC adapterDesc;
 	while (dxgiFactory->EnumAdapters(i, &pAdapter) != DXGI_ERROR_NOT_FOUND)
 	{
@@ -359,17 +373,12 @@ void * DirectXRenderer::getGraphicsBinding(XrInstance &xrInstance, XrSystemId &x
 	creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	// Create the Direct3D 11 API device object and a corresponding context.
 	D3D_DRIVER_TYPE driverType = ((pAdapter == nullptr) ? D3D_DRIVER_TYPE_HARDWARE : D3D_DRIVER_TYPE_UNKNOWN);
 
+	// feature leve must be DirectX 11
 	dxRequirements.minFeatureLevel = D3D_FEATURE_LEVEL_11_0;
 
-
-	/*
-	HRESULT res = D3D11CreateDeviceAndSwapChain(pAdapter, driverType, 0, creationFlags, &dxRequirements.minFeatureLevel, 1, D3D11_SDK_VERSION, &swapChainDesc, &dxSwapchain, &dxDevice, nullptr, &dxContext);
-
-		dxSwapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**) &tex);
-	*/
+	// Create the Direct3D 11 API device object and a corresponding context.
 	HRESULT res = D3D11CreateDevice(pAdapter, driverType, 0, creationFlags, &dxRequirements.minFeatureLevel, 1,
 		D3D11_SDK_VERSION, &dxDevice, nullptr, &dxContext);
 
@@ -381,39 +390,33 @@ void * DirectXRenderer::getGraphicsBinding(XrInstance &xrInstance, XrSystemId &x
 bool DirectXRenderer::initSwapchains(XrSession &xrSession, std::vector<XrViewConfigurationView> &views)
 {
 	for (uint32_t i = 0; i < views.size(); i++) {
-		// Create a swapchain for this viewpoint! A swapchain is a set of texture buffers used for displaying to screen,
-		// typically this is a backbuffer and a front buffer, one for rendering data to, and one for displaying on-screen.
-		// A note about swapchain image format here! OpenXR doesn't create a concrete image format for the texture, like 
-		// DXGI_FORMAT_R8G8B8A8_UNORM. Instead, it switches to the TYPELESS variant of the provided texture format, like 
-		// DXGI_FORMAT_R8G8B8A8_TYPELESS. When creating an ID3D11RenderTargetView for the swapchain texture, we must specify
-		// a concrete type like DXGI_FORMAT_R8G8B8A8_UNORM, as attempting to create a TYPELESS view will throw errors, so 
-		// we do need to store the format separately and remember it later.
 
+		// Swapchain creation. IMPORTANT! format must be DXGI_FORMAT_R8G8B8A8_UNORM
 		XrSwapchain handle;
-		XrSwapchainCreateInfo swapchain_info = { XR_TYPE_SWAPCHAIN_CREATE_INFO };
-		swapchain_info.arraySize = 1;
-		swapchain_info.mipCount = 1;
-		swapchain_info.faceCount = 1;
-		swapchain_info.format = DXGI_FORMAT_R8G8B8A8_UNORM;
-		swapchain_info.width = views[i].recommendedImageRectWidth;
-		swapchain_info.height = views[i].recommendedImageRectHeight;
-		swapchain_info.sampleCount = views[i].recommendedSwapchainSampleCount;
-		swapchain_info.usageFlags = XR_SWAPCHAIN_USAGE_SAMPLED_BIT | XR_SWAPCHAIN_USAGE_COLOR_ATTACHMENT_BIT;
+		XrSwapchainCreateInfo swapchain_info	= { XR_TYPE_SWAPCHAIN_CREATE_INFO };
+		swapchain_info.arraySize				= 1;
+		swapchain_info.mipCount					= 1;
+		swapchain_info.faceCount				= 1;
+		swapchain_info.format					= DXGI_FORMAT_R8G8B8A8_UNORM;
+		swapchain_info.width					= views[i].recommendedImageRectWidth;
+		swapchain_info.height					= views[i].recommendedImageRectHeight;
+		swapchain_info.sampleCount				= views[i].recommendedSwapchainSampleCount;
+		swapchain_info.usageFlags				= XR_SWAPCHAIN_USAGE_SAMPLED_BIT | XR_SWAPCHAIN_USAGE_COLOR_ATTACHMENT_BIT;
 		xrCreateSwapchain(xrSession, &swapchain_info, &handle);
 
 		// Find out how many textures were generated for the swapchain
 		uint32_t surface_count = 0;
 		xrEnumerateSwapchainImages(handle, 0, &surface_count, nullptr);
 
-		// We'll want to track our own information about the swapchain, so we can draw stuff onto it! We'll also create
-		// a depth buffer for each generated texture here as well with make_surfacedata.
-		Swapchain swapchain = {};
-		swapchain.width = swapchain_info.width;
-		swapchain.height = swapchain_info.height;
-		swapchain.handle = handle;
+		Swapchain swapchain				= {};
+		swapchain.width					= swapchain_info.width;
+		swapchain.height				= swapchain_info.height;
+		swapchain.handle				= handle;
 		swapchain.surfaceImages.resize(surface_count, { XR_TYPE_SWAPCHAIN_IMAGE_D3D11_KHR });
 		swapchain.surfaceData.resize(surface_count);
 
+		// xrEnumerateSwapchainImages fills an array of graphics API-specific XrSwapchainImage (XrSwapchainImageD3D11KHR) 
+		// Each image created needs a render surface to be initialized
 		xrEnumerateSwapchainImages(swapchain.handle, surface_count, &surface_count, (XrSwapchainImageBaseHeader*)swapchain.surfaceImages.data());
 		for (uint32_t i = 0; i < surface_count; i++) {
 			swapchain.surfaceData[i] = initSurfaces(swapchain.surfaceImages[i]);
@@ -433,43 +436,49 @@ DirectXRenderer::DXSwapchainSurface DirectXRenderer::initSurfaces(XrSwapchainIma
 {
 	DirectXRenderer::DXSwapchainSurface result = {};
 
-	// Get information about the swapchain image that OpenXR made for us!
+	// Get information about the swapchain image created by the OpenXR runtime
 	D3D11_TEXTURE2D_DESC      color_desc;
 	swapchainImage.texture->GetDesc(&color_desc);
 
-	// Create a view resource for the swapchain image target that we can use to set up rendering.
+	// Create a view resource for the swapchain image target used to set up rendering.
 	D3D11_RENDER_TARGET_VIEW_DESC target_desc = {};
 	target_desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-	// NOTE: Why not use color_desc.Format? Check the notes over near the xrCreateSwapchain call!
-	// Basically, the color_desc.Format of the OpenXR created swapchain is TYPELESS, but in order to
+	// The Format of the OpenXR created swapchain is TYPELESS, but in order to
 	// create a View for the texture, we need a concrete variant of the texture format like UNORM.
 	target_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	dxDevice->CreateRenderTargetView(swapchainImage.texture, &target_desc, &result.targetView);
 
 	// Create a depth buffer that matches 
 	ID3D11Texture2D     *depth_texture;
-	D3D11_TEXTURE2D_DESC depth_desc = {};
-	depth_desc.SampleDesc.Count = 1;
-	depth_desc.MipLevels = 1;
-	depth_desc.Width = color_desc.Width;
-	depth_desc.Height = color_desc.Height;
-	depth_desc.ArraySize = color_desc.ArraySize;
-	depth_desc.Format = DXGI_FORMAT_R32_TYPELESS;
-	depth_desc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL;
+	D3D11_TEXTURE2D_DESC depth_desc		= {};
+	depth_desc.SampleDesc.Count			= 1;
+	depth_desc.MipLevels				= 1;
+	depth_desc.Width					= color_desc.Width;
+	depth_desc.Height					= color_desc.Height;
+	depth_desc.ArraySize				= color_desc.ArraySize;
+	depth_desc.Format					= DXGI_FORMAT_R32_TYPELESS;
+	depth_desc.BindFlags				= D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL;
 	dxDevice->CreateTexture2D(&depth_desc, nullptr, &depth_texture);
 
-	// And create a view resource for the depth buffer, so we can set that up for rendering to as well!
+	// Create a view resource for the depth buffer
 	D3D11_DEPTH_STENCIL_VIEW_DESC stencil_desc = {};
 	stencil_desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	stencil_desc.Format = DXGI_FORMAT_D32_FLOAT;
 	dxDevice->CreateDepthStencilView(depth_texture, &stencil_desc, &result.depthView);
 
-	// We don't need direct access to the ID3D11Texture2D object anymore, we only need the view
+	// Direct access to the ID3D11Texture2D object is not needed anymore, only the view is needed
 	depth_texture->Release();
 
 	return result;
 }
 
+/*l'interop viene realizzato attraverso i colorbuffer. Le swapchain OpenXR sono inizializzate dal runtime con un formato TYPELESS 
+* che non è compatibile con il formato supportato dall'interop. Dunque è necessario creare una nostra swapchain DirectX con il formato
+* DXGI_FORMAT_B8G8R8A8_UNORM mentre le risorge opengl con il formato GL_RGBA8. 
+* In questo modo vengono inizializzati dei colorbuffer da DirectX che possiamo usare per l'interop. Un ulteriore accorgimento è quello
+* di settare il BufferUsage = DXGI_USAGE_SHADER_INPUT altrimenti non è possibile creare una ShaderResourceView e utilizzare la texture DirectX 
+* per il passtrough.
+*/
 void DirectXRenderer::initInterop()
 {
 	IDXGIDevice1* dxgiDevice;
@@ -481,11 +490,11 @@ void DirectXRenderer::initInterop()
 	IDXGIFactory2* dxgiFactory;
 	dxgiAdapter->GetParent(__uuidof(IDXGIFactory2), reinterpret_cast<void**>(&dxgiFactory));
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-
+	/////////////////////////////////////////
+	//			DirectX swapchain creation
 	DXGI_SWAP_CHAIN_DESC swapChainDesc;
-	swapChainDesc.BufferDesc.Width = 2200; // use window width
-	swapChainDesc.BufferDesc.Height = 2200; // use window height
+	swapChainDesc.BufferDesc.Width = sizeX; // use window width
+	swapChainDesc.BufferDesc.Height = sizeY; // use window height
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 	//swapChainDesc.Stereo = FALSE;
 	swapChainDesc.SampleDesc.Count = 1;
@@ -499,17 +508,26 @@ void DirectXRenderer::initInterop()
 
 	dxgiFactory->CreateSwapChain(dxDevice, &swapChainDesc, &dxSwapchain);
 
+	/////////////////////////////////////////
+	//			set DirectX texture as a resource to be used during texture mapping
 	dxSwapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&dxTexture));
 	dxDevice->CreateShaderResourceView(dxTexture, nullptr, &dxTextureResource);
 
+
+	/////////////////////////////////////////
+	//			OpenGL Colorbuffer set-up
 	glGenRenderbuffers(1, &colorBuf);
 	glBindRenderbuffer(GL_RENDERBUFFER, colorBuf);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, sizeX, sizeY);
 
+	/////////////////////////////////////////
+	//			OpenGL depthbuffer set-up
 	glGenRenderbuffers(1, &rboDepthId);
 	glBindRenderbuffer(GL_RENDERBUFFER, rboDepthId);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, sizeX, sizeY);
 
+	/////////////////////////////////////////
+	//			OpenGL Framebuffer set-up
 	glGenFramebuffers(1, &fboId);
 	glBindFramebuffer(GL_FRAMEBUFFER, fboId);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBuf);
@@ -523,7 +541,13 @@ void DirectXRenderer::initInterop()
 		return;
 	}
 
+	/////////////////////////////////////////
+	//			Interop handles creation
+	// NV_DX_interop specification:					https://www.khronos.org/registry/OpenGL/extensions/NV/WGL_NV_DX_interop.txt
+	// NV_DX_interop2 updates compatible resources	https://www.khronos.org/registry/OpenGL/extensions/NV/WGL_NV_DX_interop2.txt
+	//wglDXOpenDeviceNV creates the interop main handle which is used to manage shared resources
 	interopHandle = wglDXOpenDeviceNV(dxDevice);
+	//wglDXRegisterObjectNV creates an handle used during rendering with lock/unlock calls
 	textureHandle = wglDXRegisterObjectNV(interopHandle, dxTexture, colorBuf, GL_RENDERBUFFER, WGL_ACCESS_READ_WRITE_NV);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
