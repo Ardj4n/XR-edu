@@ -106,11 +106,6 @@ DirectXRenderer::~DirectXRenderer()
 {
 }
 
-bool DirectXRenderer::init()
-{
-	return false;
-}
-
 std::string DirectXRenderer::getRenderExtensionName()
 {
 	return XR_KHR_D3D11_ENABLE_EXTENSION_NAME;
@@ -215,7 +210,40 @@ bool DirectXRenderer::initPlatformResources(int width, int heigth)
 
 bool DirectXRenderer::free()
 {
-	return false;
+	for (int i = 0; i < swapchains.size(); i++) {
+		xrDestroySwapchain(swapchains[i].handle);
+		for (uint32_t j = 0; j < swapchains[i].surfaceData.size(); j++) {
+			swapchains[i].surfaceData[j].depthView->Release();
+			swapchains[i].surfaceData[j].targetView->Release();
+		}
+	}
+	swapchains.clear();
+
+	if (textureHandle)		{ wglDXUnregisterObjectNV(interopHandle, textureHandle); }
+	if (interopHandle)		{ wglDXCloseDeviceNV(interopHandle); }
+
+	if (colorBuf)			{ glDeleteRenderbuffers(1, &colorBuf); }
+	if (rboDepthId)			{ glDeleteRenderbuffers(1, &rboDepthId); }
+	if (fboId)				{ glDeleteFramebuffers(1, &fboId); }
+
+	if (dxSwapchain)		{ dxSwapchain->Release(); dxSwapchain = nullptr; }
+	if (dxTexture)			{ dxTexture->Release(); dxTexture = nullptr; }
+	if (dxTextureResource)	{ dxTextureResource->Release(); dxTextureResource = nullptr; }
+
+	if (samplerState)		{ samplerState->Release(); samplerState = nullptr; }
+	if (rasterizerState)	{ rasterizerState->Release(); rasterizerState = nullptr; }
+	if (pixelShader)		{ pixelShader->Release(); pixelShader = nullptr; }
+	if (vertexShader)		{ vertexShader->Release(); vertexShader = nullptr; }
+
+	if (indexBuffer)		{ indexBuffer->Release(); indexBuffer = nullptr; }
+	if (vertexBuffer)		{ vertexBuffer->Release(); vertexBuffer = nullptr; }
+	if (constantBuffer)		{ constantBuffer->Release(); constantBuffer = nullptr; }
+	if (inputLayout)		{ inputLayout->Release(); inputLayout = nullptr; }
+
+	if (dxContext)			{ dxContext->Release(); dxContext = nullptr; }
+	if (dxDevice)			{ dxDevice->Release();  dxDevice = nullptr; }
+
+	return true;
 }
 
 bool DirectXRenderer::beginEyeFrame(int eye, int textureIndex)

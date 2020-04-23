@@ -30,9 +30,10 @@ OpenGLRenderer::~OpenGLRenderer()
 
 }
 
-bool OpenGLRenderer::init()
+std::string OpenGLRenderer::getRenderExtensionName()
 {
 
+	return XR_KHR_OPENGL_ENABLE_EXTENSION_NAME;
 }
 
 bool OpenGLRenderer::initPlatformResources(int width, int height)

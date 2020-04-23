@@ -18,7 +18,7 @@ public:
     OpenGLRenderer();
     ~OpenGLRenderer();
 
-    bool init();
+	std::string getRenderExtensionName();
     bool initPlatformResources(int width, int height);
     bool free();
 

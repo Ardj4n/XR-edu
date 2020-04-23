@@ -11,14 +11,20 @@
 #include "PlatformRenderer.h"
 
 
-
+/**
+ * @brief This class enables rendering from OpenGL to an OpenXR application
+ * using NV_DX_interop to share framebufferrs across DirectX 11 and OpenGL in a Windows enviroment.
+ *
+ * @paragrpah This class provides the mechanisms necessary for an application to generate a valid
+ * XrGraphicsBindingD3D11KHR structure in order to create a D3D11-based XrSession. 
+ * This class handles the creation of all the required D3D11 objects, including a graphics device to be used for rendering.
+ * This class also provides mechanisms for the OvXR class to interact with images acquired by calling xrEnumerateSwapchainImages.
+ */
 class DirectXRenderer : public virtual PlatformRenderer
 {
 public:
 	DirectXRenderer();
 	~DirectXRenderer();
-
-	bool init();
 
 	std::string getRenderExtensionName();
 	bool initPlatformResources(int width, int height);

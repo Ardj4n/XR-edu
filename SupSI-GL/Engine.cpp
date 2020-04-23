@@ -118,6 +118,29 @@ void timerCallback(int value)
 	glutTimerFunc(1000, timerCallback, 0);
 }
 
+void closeCallback()
+{
+	std::cout << "Requestin Exit" << std::endl;
+
+	xr.endSession();
+	xr.free();
+	
+	// Free OpenGL stuff:
+	glDeleteBuffers(1, &boxVertexVbo);
+	glDeleteBuffers(1, &boxTexCoordVbo);
+	glDeleteVertexArrays(1, &globalVao);
+	for (int c = 0; c < 2; c++)
+	{
+		delete fbo[c];
+		glDeleteTextures(1, &fboTexId[c]);
+	}
+	delete passthroughShader;
+	delete passthroughFs;
+	delete passthroughVs;
+}
+
+
+
 Engine::Engine()
 {
 }
@@ -491,7 +514,9 @@ void LIB_API Engine::init(int argc, char *argv[], string title)
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0f); //no "scanner" effect
 	glShadeModel(GL_SMOOTH); //shades triangles
 	timerCallback(0); //fps
-	
+
+	glutCloseFunc(closeCallback);
+
 #ifdef _DEBUG
 	// Register OpenGL debug callback
 	glDebugMessageCallback((GLDEBUGPROC)DebugCallback, nullptr);
@@ -800,7 +825,7 @@ void LIB_API Engine::renderOpenXR(Node* node)
 		glm::mat4 headMat = xr.getEyeModelviewMatrix(e);
 		glm::mat4 proj = xr.getProjMatrix(e, 0.1f, 1000.f);
 
-		xr.lockSwapchain(i);
+		xr.lockSwapchain(e);
 
 		glViewport(0, 0, xr.getHmdIdealHorizRes(), xr.getHmdIdealVertRes());
 		glClearColor(0, 0, 0, 1);
@@ -808,7 +833,7 @@ void LIB_API Engine::renderOpenXR(Node* node)
 		
 		list->renderXR(proj, headMat);
 
-		xr.unlockSwapchain(i);
+		xr.unlockSwapchain(e);
 	}
 
 	xr.endFrame();
