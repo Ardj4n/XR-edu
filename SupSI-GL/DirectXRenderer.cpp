@@ -115,6 +115,7 @@ std::string DirectXRenderer::getRenderExtensionName()
 
 bool DirectXRenderer::initPlatformResources(int width, int heigth)
 {
+     //set swapchain image size
 	this->sizeX = width;
 	this->sizeY = heigth;
 
@@ -215,15 +216,17 @@ bool DirectXRenderer::initPlatformResources(int width, int heigth)
 
 bool DirectXRenderer::free()
 {
-	for (int i = 0; i < swapchains.size(); i++) {
-		// destroy each swapchain created by OpenXR
-		xrDestroySwapchain(swapchains[i].handle);
-		for (uint32_t j = 0; j < swapchains[i].surfaceData.size(); j++) {
-			swapchains[i].surfaceData[j].depthView->Release();
-			swapchains[i].surfaceData[j].targetView->Release();
-		}
-	}
-	swapchains.clear();
+     if(swapchains.size() > 0) {
+          for (int i = 0; i < swapchains.size(); i++) {
+               // destroy each swapchain created by OpenXR
+               xrDestroySwapchain(swapchains[i].handle);
+               for (uint32_t j = 0; j < swapchains[i].surfaceData.size(); j++) {
+                    swapchains[i].surfaceData[j].depthView->Release();
+                    swapchains[i].surfaceData[j].targetView->Release();
+               }
+          }
+          swapchains.clear();
+     }
 
 	// free interop resources
 	if (textureHandle)		{ wglDXUnregisterObjectNV(interopHandle, textureHandle); }

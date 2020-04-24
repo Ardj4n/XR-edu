@@ -2,6 +2,7 @@
 
 
 #include <vector>
+#include <string>
 
 #ifdef _WINDOWS
 #else

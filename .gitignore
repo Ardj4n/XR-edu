@@ -77,5 +77,5 @@ x64/*
 SupSI-GL/x64/*
 TransformApp/x64/*
 DxT/*
-
+dependencies/freeimage/lib
 *.ppm

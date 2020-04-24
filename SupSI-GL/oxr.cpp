@@ -48,10 +48,8 @@ bool OvXR::init()
 
 	instance_create_info.enabledApiLayerCount = 0;
 	instance_create_info.enabledApiLayerNames = nullptr;
-	instance_create_info.enabledExtensionCount = extensionsToEnable.size();
-	//instance_create_info.enabledExtensionCount = array_size(extensionsToEnable);
-	instance_create_info.enabledExtensionNames = extensionsToEnable.data();
-	//instance_create_info.enabledExtensionNames = extensionsToEnable;
+    instance_create_info.enabledExtensionCount = extensionsToEnable.size();
+    instance_create_info.enabledExtensionNames = extensionsToEnable.data();
 
 	// Try create instance and look for the correct return
 	xrInstance = XR_NULL_HANDLE;
@@ -90,9 +88,8 @@ bool OvXR::init()
 	}
 	std::cout << "Runtime supports " << viewConfigurationCount << " view configurations" << std::endl;
 
-	XrViewConfigurationType* viewConfigurations = new XrViewConfigurationType[viewConfigurationCount];
-
-	xrEnumerateViewConfigurations(xrInstance, xrSys, viewConfigurationCount, &viewConfigurationCount, viewConfigurations);
+    std::vector<XrViewConfigurationType> viewConfigurations = std::vector<XrViewConfigurationType>(viewConfigurationCount);
+    xrEnumerateViewConfigurations(xrInstance, xrSys, viewConfigurationCount, &viewConfigurationCount, viewConfigurations.data());
 
 	{
 		XrViewConfigurationProperties stereoViewConfigProperties;
@@ -126,7 +123,7 @@ bool OvXR::init()
 		std::cout << "VR View Configuration:\n" << std::endl;
 		std::cout << "\tview configuratio type: " << stereoViewConfigProperties.viewConfigurationType << std::endl;
 		std::cout << "\tFOV mutable           : " << (stereoViewConfigProperties.fovMutable ? "yes" : "no") << std::endl;
-	}
+    }
 
 	res = xrEnumerateViewConfigurationViews(xrInstance, xrSys, stereoViewConfigType, 0, &viewCount, nullptr);
 	if (!XR_SUCCEEDED(res))
@@ -189,6 +186,8 @@ bool OvXR::init()
 
 	std::cout << "[INFO] Session created successfuly" << std::endl;
 
+    delete graphics_binding;
+
 	//-------------------------------------
 	//          BLEND MODES[10]
 	unsigned int blend_count = 0;
@@ -222,6 +221,8 @@ bool OvXR::init()
 			std::cout << "0x" << std::hex << swapchainFormats[i] << std::dec << std::endl;
 		}
 		std::cout << std::endl;
+
+        delete [] swapchainFormats;
 	}
 
 	platformRenderer->initSwapchains(xrSession, configurationViews);
@@ -428,6 +429,9 @@ void OvXR::unlockSwapchain(OvEye eye)
 
 bool OvXR::free()
 {
+    if(!sessionRunning)
+        return false;
+
 	endSession();
 	//free platfomr resources
 	platformRenderer->free();

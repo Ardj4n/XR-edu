@@ -29,7 +29,6 @@ int APIENTRY DllMain(HANDLE instDLL, DWORD reason, LPVOID _reserved)
 #endif
 #include "Engine.h"
 #include <GL/glew.h>
-#include <GL/wglew.h>
 #include "GL/freeglut.h"
 #include <FreeImage.h>
 
@@ -122,8 +121,8 @@ void closeCallback()
 {
 	std::cout << "Requestin Exit" << std::endl;
 
-	xr.endSession();
-	xr.free();
+    xr.endSession();
+    xr.free();
 	
 	// Free OpenGL stuff:
 	glDeleteBuffers(1, &boxVertexVbo);
@@ -526,18 +525,6 @@ void LIB_API Engine::init(int argc, char *argv[], string title)
 
 	loadFboAndItsTexture();
 	setUpBox();
-
-	
-	PFNWGLDXREGISTEROBJECTNVPROC interop = (PFNWGLDXREGISTEROBJECTNVPROC)wglGetProcAddress("wglDXRegisterObjectNV");
-	if (!interop)
-	{
-	std:cout << "Your Computer Does Not Support NV_DX_interop" << std::endl;
-		exit(1);
-	}
-	else
-	{
-		std::cout << "Loadded Extension wglDXRegisterObjectNV" << std::endl;
-	}
 }
 
 Node LIB_API * Engine::load(string scene)
@@ -773,7 +760,7 @@ void LIB_API Engine::mouseWheel(void(*wheelFunc)(int, int, int, int))
 
 bool LIB_API Engine::initOpenXR()
 {
-	xr.init();
+    xr.init();
 
 	XrQuaternionf quat;
 	quat.x = quat.y = quat.z = 0.f;
@@ -784,9 +771,9 @@ bool LIB_API Engine::initOpenXR()
 	identityPose.orientation = quat;
 	identityPose.position = pos;
 
-	xr.setReferenceSpace(identityPose, XR_REFERENCE_SPACE_TYPE_LOCAL);
+    xr.setReferenceSpace(identityPose, XR_REFERENCE_SPACE_TYPE_LOCAL);
 
-	xr.beginSession();
+    xr.beginSession();
 
 	std::function<void(XrEventDataBuffer)> cb = [](XrEventDataBuffer runtimeEvent) {
 		std::cout << "EVENT: session state changed ";
@@ -803,40 +790,40 @@ bool LIB_API Engine::initOpenXR()
 		std::cout << std::endl;
 	};
 
-	xr.setCallback(XR_TYPE_EVENT_DATA_SESSION_STATE_CHANGED, cb);
+    xr.setCallback(XR_TYPE_EVENT_DATA_SESSION_STATE_CHANGED, cb);
 
-	cout << "Runtime name: " << xr.getRuntimeName() << endl;
-	cout << "Manufacturer name: " << xr.getManufacturerName() << endl;
-	cout << "risoluzione: " << xr.getHmdIdealHorizRes() << "x" << xr.getHmdIdealVertRes() << endl;
+    cout << "Runtime name: " << xr.getRuntimeName() << endl;
+    cout << "Manufacturer name: " << xr.getManufacturerName() << endl;
+    cout << "risoluzione: " << xr.getHmdIdealHorizRes() << "x" << xr.getHmdIdealVertRes() << endl;
 
 	return true;
 }
 
-void LIB_API Engine::renderOpenXR(Node* node)
+void LIB_API Engine::renderOpenXR(Node* node, const glm::mat4 &wasdMat)
 {
 	List* list = createList(node);
 	pr->render();
 
-	xr.beginFrame();
+    xr.beginFrame();
 
 	for (int i = 0; i < 2; i++)
 	{
 		OvXR::OvEye e = (OvXR::OvEye) i;
-		glm::mat4 headMat = xr.getEyeModelviewMatrix(e);
-		glm::mat4 proj = xr.getProjMatrix(e, 0.1f, 1000.f);
+        glm::mat4 headMat = xr.getEyeModelviewMatrix(e);
+        glm::mat4 proj = xr.getProjMatrix(e, 0.1f, 1000.f);
 
-		xr.lockSwapchain(e);
+        xr.lockSwapchain(e);
 
-		glViewport(0, 0, xr.getHmdIdealHorizRes(), xr.getHmdIdealVertRes());
+        glViewport(0, 0, xr.getHmdIdealHorizRes(), xr.getHmdIdealVertRes());
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		list->renderXR(proj, headMat);
+        list->renderXR(proj, headMat * wasdMat);
 
-		xr.unlockSwapchain(e);
+        xr.unlockSwapchain(e);
 	}
 
-	xr.endFrame();
+    xr.endFrame();
 
 	frames++;
 }

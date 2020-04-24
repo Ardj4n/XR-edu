@@ -12,6 +12,16 @@
 
 #include "PlatformRenderer.h"
 
+
+/**
+ * @brief This class enables rendering from OpenGL to an OpenXR application in a Linux-based enviroment (currently).
+ *
+ * @paragrpah This class provides the mechanisms necessary for an application to generate a valid
+ * XrSwapchainImageOpenGLKHR structure in order to create a OpenGL-based XrSession.
+ * This class handles the creation of all the required Framebuffer objects, including a graphics device to be used for rendering.
+ * This class requires a OpenGL context initialized previously.
+ * This class manages indipendently the rendering objects by resetting the viewport and binding the required framebuffer.
+ */
 class OpenGLRenderer : public virtual PlatformRenderer
 {
 public:
@@ -27,8 +37,6 @@ public:
 
     void* getGraphicsBinding(XrInstance &xrInstance, XrSystemId &xrSystem);
     bool initSwapchains(XrSession &xrSession, std::vector<XrViewConfigurationView> &views);
-
-    void renderTest(int eye, int textureIndex);
 
     XrSwapchain getSwapchian(int eye);
 

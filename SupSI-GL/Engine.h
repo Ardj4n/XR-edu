@@ -278,7 +278,7 @@ public:
 	void mouseWheel(void(*wheelFunc)(int, int, int, int));
 
 	bool initOpenXR();
-	void renderOpenXR(Node* n);
+    void renderOpenXR(Node* n, const glm::mat4 &wasdMat = glm::mat4{1.f});
 
 	Program* getProgram();
 	Shader* getShader();
