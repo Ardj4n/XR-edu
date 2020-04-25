@@ -518,7 +518,7 @@ glm::mat4 OvXR::getProjMatrix(OvEye eye, float nearPlane, float farPlane)
 		nearPlane, farPlane);
 }
 
-glm::mat4 OvXR::getEyeModelviewMatrix(OvEye eye)
+glm::mat4 OvXR::getEyeModelviewMatrix(OvEye eye, const glm::mat4 &baseMat)
 {
 	glm::mat4 rot = glm::mat4{
 	glm::quat{ views[eye].pose.orientation.w,
@@ -537,7 +537,7 @@ glm::mat4 OvXR::getEyeModelviewMatrix(OvEye eye)
 	);
 
 	glm::mat4 viewMatrix = trans * rot;
-	glm::mat4 inverseViewMatrix = glm::inverse(viewMatrix);
+	glm::mat4 inverseViewMatrix = glm::inverse(viewMatrix * baseMat);
 
 	return inverseViewMatrix;
 }

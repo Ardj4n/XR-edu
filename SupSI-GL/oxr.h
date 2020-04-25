@@ -183,9 +183,10 @@ public:
     /**
      * Get the eye-to-head modelview matrix for the given eye.
      * @param eye left or right eye (use enum)
+	 * @param baseMat enables support for moving user position with keyboard and mouse
      * @return eye-to-head modelview matrix ready for OpenGL
      */
-	glm::mat4 getEyeModelviewMatrix(OvEye eye);
+	glm::mat4 getEyeModelviewMatrix(OvEye eye, const glm::mat4 &baseMat = glm::mat4{ 1.f });
 
 
     /**

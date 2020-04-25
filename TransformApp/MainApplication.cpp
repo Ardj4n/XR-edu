@@ -42,7 +42,7 @@ Node* currentAnim;
 Node* endAnim;
 glm::mat4 translation = glm::translate(glm::mat4(1), glm::vec3(0.0f,0.1f,0.0f));
 //glm::mat4 translationCamera = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 120.0f, 200.0f));
-glm::mat4 translationCamera = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -20.0f, 20.0f));
+glm::mat4 translationCamera = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
 glm::mat4 rotationCamera = glm::mat4(1);
 int sizeX;
@@ -95,7 +95,7 @@ void displayCallback()
     engine->clear();
 
     //engine->renderScene(n);
-    engine->renderOpenXR(n, c->getPosMatrix());
+    engine->renderOpenXR(n/*, c->getPosMatrix()*/);
 
     engine->swap();
     engine->redisplay();
@@ -130,7 +130,7 @@ void updateCamera()
  */
 void keyboardCallback(unsigned char key, int mouseX, int mouseY)
 {
-    float tValue = 10.f;
+    float tValue = 1.f;
 
     switch (key)
     {
@@ -283,6 +283,8 @@ int main(int argc, char *argv[])
     //n1 = engine->load("../resources/scena0.OVO");
     //n2 = engine->load("../resources/scena4.OVO");
     n = engine->load("../resources/scena0.OVO");
+	glm::mat4 scale = glm::scale(glm::mat4{ 1.f }, glm::vec3{ 0.005f });
+	n->setPosMatrix(scale);
 
     l = engine->createList(n)->getNodes();
     //l1 = engine->createList(n1)->getNodes();

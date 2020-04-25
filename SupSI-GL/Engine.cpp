@@ -809,7 +809,7 @@ void LIB_API Engine::renderOpenXR(Node* node, const glm::mat4 &wasdMat)
 	for (int i = 0; i < 2; i++)
 	{
 		OvXR::OvEye e = (OvXR::OvEye) i;
-        glm::mat4 headMat = xr.getEyeModelviewMatrix(e);
+        glm::mat4 headMat = xr.getEyeModelviewMatrix(e, wasdMat);
         glm::mat4 proj = xr.getProjMatrix(e, 0.1f, 1000.f);
 
         xr.lockSwapchain(e);
@@ -818,7 +818,7 @@ void LIB_API Engine::renderOpenXR(Node* node, const glm::mat4 &wasdMat)
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-        list->renderXR(proj, headMat * wasdMat);
+        list->renderXR(proj, headMat);
 
         xr.unlockSwapchain(e);
 	}

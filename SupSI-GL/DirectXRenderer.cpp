@@ -9,6 +9,7 @@
 
 using namespace std;
 
+
 char dxShader[]  = R"(
 cbuffer constants : register(b0)
 {
@@ -518,22 +519,22 @@ void DirectXRenderer::initInterop()
 
 
 	/////////////////////////////////////////
+	//			OpenGL Framebuffer set-up
+	glGenFramebuffers(1, &fboId);
+	glBindFramebuffer(GL_FRAMEBUFFER, fboId);
+
+	/////////////////////////////////////////
 	//			OpenGL Colorbuffer set-up
 	glGenRenderbuffers(1, &colorBuf);
 	glBindRenderbuffer(GL_RENDERBUFFER, colorBuf);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, sizeX, sizeY);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBuf);
 
 	/////////////////////////////////////////
 	//			OpenGL depthbuffer set-up
 	glGenRenderbuffers(1, &rboDepthId);
 	glBindRenderbuffer(GL_RENDERBUFFER, rboDepthId);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, sizeX, sizeY);
-
-	/////////////////////////////////////////
-	//			OpenGL Framebuffer set-up
-	glGenFramebuffers(1, &fboId);
-	glBindFramebuffer(GL_FRAMEBUFFER, fboId);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorBuf);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, sizeX, sizeY);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepthId);
 
 
