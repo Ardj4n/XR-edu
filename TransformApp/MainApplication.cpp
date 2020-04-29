@@ -323,7 +323,5 @@ int main(int argc, char *argv[])
     engine->setActiveCamera(c);
     engine->startEventLoop();
 
-    delete engine;
-    delete c;
-    delete n;
+	return 0;
 }

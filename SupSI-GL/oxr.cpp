@@ -2,146 +2,166 @@
 
 #ifdef _WINDOWS
 #include "DirectXRenderer.h"
-
 #else
 #include "OpenGLRenderer.h"
-
 #endif // _WINDOWS
 
 OvXR::OvXR(const std::string & app_name)
-    : appName{ app_name }
-    , xrInstance{XR_NULL_HANDLE}
-    , xrSession{XR_NULL_HANDLE}
-	, sessionRunning{false}
+	: appName{ app_name }
+	, xrInstance{ XR_NULL_HANDLE }
+	, xrSession{ XR_NULL_HANDLE }
+	, sessionRunning{ false }
+	, graphicsBinding { nullptr }
 {
-
+	// initialize the specif class / rendering layer based on the platform we are on
 #ifdef _WINDOWS
 	platformRenderer = new DirectXRenderer();
 #else
-    platformRenderer = new OpenGLRenderer();
+	platformRenderer = new OpenGLRenderer();
 #endif // _WINDOWS
 }
 
 OvXR::~OvXR()
 {
-	free();
+
 }
 
 bool OvXR::init()
 {
 	XrResult res;
 
-	std::vector<const char*> extensionsToEnable{};
+	std::vector<const char*> extensionsToEnable;
+	// retrive the platform render specific extension name and add it
+	// to the list of extension that will use for creating the instance
 	std::string ext = platformRenderer->getRenderExtensionName();
 	extensionsToEnable.push_back(ext.c_str());
-	//const char* extensionsToEnable[1] = { ext.c_str() };
 
-	XrApplicationInfo application_info = {};
-	strcpy(application_info.applicationName, appName.c_str());
-	application_info.apiVersion = XR_CURRENT_API_VERSION;
+	// some informations that help runtimes recognize behavior inherent to classes of applications
+	XrApplicationInfo applicationInfo;
+	strcpy(applicationInfo.applicationName, appName.c_str()); // name of the application
+	strcpy(applicationInfo.engineName, appName.c_str()); // name of the application
+	applicationInfo.apiVersion = XR_CURRENT_API_VERSION; // version of this API against which the application will run
 
-	XrInstanceCreateInfo instance_create_info;
-	instance_create_info.type = XR_TYPE_INSTANCE_CREATE_INFO;
-	instance_create_info.next = nullptr;
-	instance_create_info.createFlags = 0;
-	instance_create_info.applicationInfo = application_info;
+	XrInstanceCreateInfo instanceCreateInfo;
+	instanceCreateInfo.type = XR_TYPE_INSTANCE_CREATE_INFO; // the XrStructureType of this structure
+	instanceCreateInfo.next = nullptr;
+	instanceCreateInfo.createFlags = 0;
+	instanceCreateInfo.applicationInfo = applicationInfo; // link to applicationInfo
+	instanceCreateInfo.enabledApiLayerCount = 0; // the number of global API layers to enable
+	instanceCreateInfo.enabledApiLayerNames = nullptr; //... no API layers to enable
+	instanceCreateInfo.enabledExtensionCount = extensionsToEnable.size(); // numbero of extension to enable
+	instanceCreateInfo.enabledExtensionNames = extensionsToEnable.data(); // link to extensionsToEnable
 
-	instance_create_info.enabledApiLayerCount = 0;
-	instance_create_info.enabledApiLayerNames = nullptr;
-    instance_create_info.enabledExtensionCount = extensionsToEnable.size();
-    instance_create_info.enabledExtensionNames = extensionsToEnable.data();
-
-	// Try create instance and look for the correct return
-	xrInstance = XR_NULL_HANDLE;
-	res = xrCreateInstance(&instance_create_info, &xrInstance);
+	// create the instance and check the result of the operation
+	res = xrCreateInstance(&instanceCreateInfo, &xrInstance);
 	if (!XR_SUCCEEDED(res))
 	{
-		std::cout << "[ERROR] Instance creation failed!" << std::endl;
+		std::cout << "[OvXR | ERROR] Instance creation failed!" << std::endl;
 		return false;
 	}
+
+	std::cout << "[OvXR | INFO] XrInstance created" << std::endl;
+
 
 	//---------------------------------------
 	//          SYSTEM[5]
-	XrSystemGetInfo system_get_info;
-	memset(&system_get_info, 0, sizeof(system_get_info));
-	system_get_info.type = XR_TYPE_SYSTEM_GET_INFO;
-	system_get_info.formFactor = XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY;
+	// structure that specifies attributes about a system as desired by an application
+	XrSystemGetInfo systemGetInfo;
+	memset(&systemGetInfo, 0, sizeof(systemGetInfo));
+	systemGetInfo.type = XR_TYPE_SYSTEM_GET_INFO;
+	// the following attribute specifics the form factor
+	// XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY --> The tracked display is attached to
+	// the user’s head (VR headset use case)
+	systemGetInfo.formFactor = XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY;
 
-	xrGetSystem(xrInstance, &system_get_info, &xrSys);
+	// retrive the system ID and check the result of the operation
+	xrGetSystem(xrInstance, &systemGetInfo, &xrSys);
 	if (xrSys == XR_NULL_SYSTEM_ID)
 	{
-		std::cout << "[ERROR] xrGetSystem failed!" << std::endl;
+		std::cout << "[OvXR | ERROR] xrGetSystem failed!" << std::endl;
 		return false;
 	}
+
+	std::cout << "[OvXR | INFO] System ready" << std::endl;
 
 	//-------------------------------------
 	//          VIEW Configuration[8]
-
-	XrViewConfigurationType stereoViewConfigType =
-		XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO;
+	// setting of view configuration
+	// XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO --> Two views representing the form
+	// factor’s two primary displays, which map to a left-eye and right-eye view.
+	// This configuration requires two views in XrViewConfigurationProperties and two
+	// views in each XrCompositionLayerProjection layer.
+	// View index 0 must represent the left eye and view index 1 must represent the right eye.
+	XrViewConfigurationType stereoViewConfigType = XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO;
 
 	uint32_t viewConfigurationCount;
+	// enumerateing the view configuration types supported by the XrSystemId
+	// viewConfigurationsTypeCapacityInput = 0 indicate a request to retrieve the required capacity
 	res = xrEnumerateViewConfigurations(xrInstance, xrSys, 0, &viewConfigurationCount, NULL);
 	if (!XR_SUCCEEDED(res))
 	{
+		std::cout << "[OvXR | ERROR] xrEnumerateViewConfigurations failed!" << std::endl;
 		return false;
 	}
-	std::cout << "Runtime supports " << viewConfigurationCount << " view configurations" << std::endl;
+	std::cout << "[OvXR | INFO] Runtime supports " << viewConfigurationCount << " view configurations" << std::endl;
 
-    std::vector<XrViewConfigurationType> viewConfigurations = std::vector<XrViewConfigurationType>(viewConfigurationCount);
-    xrEnumerateViewConfigurations(xrInstance, xrSys, viewConfigurationCount, &viewConfigurationCount, viewConfigurations.data());
+	std::vector<XrViewConfigurationType> viewConfigurations = std::vector<XrViewConfigurationType>(viewConfigurationCount);
+	xrEnumerateViewConfigurations(xrInstance, xrSys, viewConfigurationCount, &viewConfigurationCount, viewConfigurations.data());
 
+	// check if runtime support stereo view configuration type to continue
 	{
+		bool stereoMode = false;
 		XrViewConfigurationProperties stereoViewConfigProperties;
 		for (unsigned int i = 0; i < viewConfigurationCount; ++i) {
 			XrViewConfigurationProperties properties;
 			properties.type = XR_TYPE_VIEW_CONFIGURATION_PROPERTIES;
 			properties.next = NULL;
-
 			res = xrGetViewConfigurationProperties(xrInstance, xrSys, viewConfigurations[i], &properties);
 			if (!XR_SUCCEEDED(res))
 			{
+				std::cout << "[OvXR | ERROR] xrGetViewConfigurationProperties failed!" << std::endl;
 				return false;
 			}
-
-			if (viewConfigurations[i] == stereoViewConfigType &&
-				/* just to verify */ properties.viewConfigurationType ==
-				stereoViewConfigType) {
-				std::cout << "Runtime supports stereo view configuration" << std::endl;
+			if (viewConfigurations[i] == stereoViewConfigType && properties.viewConfigurationType == stereoViewConfigType) {
+				std::cout << "[OvXR | INFO] Runtime supports stereo view configuration" << std::endl;
+				stereoMode = true;
 				stereoViewConfigProperties = properties;
 			}
-			else {
-				std::cout << "Runtime supports a view configuration we are not interested in: " << properties.viewConfigurationType << std::endl;
-			}
-		}
-		if (stereoViewConfigProperties.type !=
-			XR_TYPE_VIEW_CONFIGURATION_PROPERTIES) {
-			std::cout << "Couldn't get VR View Configuration from Runtime!" << std::endl;
-			return 1;
 		}
 
-		std::cout << "VR View Configuration:\n" << std::endl;
-		std::cout << "\tview configuratio type: " << stereoViewConfigProperties.viewConfigurationType << std::endl;
+		if (!stereoMode) {
+			std::cout << "[OvXR | Error] Runtime does not support stereo view configuration" << std::endl;
+			return false;
+		}
+
+		// print stereo view configuration properties
+		std::cout << "[OvXR | INFO] VR View Configuration:" << std::endl;
+		std::cout << "\tview configuratio type: " << stereoViewConfigProperties.viewConfigurationType << std::endl; // stereo is 2
+		// fov mutable indicates if the view field of view can be modified by the application
 		std::cout << "\tFOV mutable           : " << (stereoViewConfigProperties.fovMutable ? "yes" : "no") << std::endl;
-    }
+	}
 
+	// retrieve the view capacity querying more details about the view configuration type
 	res = xrEnumerateViewConfigurationViews(xrInstance, xrSys, stereoViewConfigType, 0, &viewCount, nullptr);
 	if (!XR_SUCCEEDED(res))
 	{
+		std::cout << "[OvXR | ERROR] xrEnumerateViewConfigurationViews failed!" << std::endl;
 		return false;
 	}
-
+	// prepare the collection of view of our configuration views
 	configurationViews = std::vector<XrViewConfigurationView>(viewCount);
 	for (int i = 0; i < viewCount; i++) {
 		configurationViews[i].type = XR_TYPE_VIEW_CONFIGURATION_VIEW;
 		configurationViews[i].next = nullptr;
 	}
-
+	// allocate a view collection according to viewCount
 	views = std::vector<XrView>(viewCount);
 	for (int i = 0; i < viewCount; i++) {
 		views[i].type = XR_TYPE_VIEW;
 		views[i].next = nullptr;
 	}
+
+	// get properties related to rendering of an individual view within a view configuration...
 	res = xrEnumerateViewConfigurationViews(xrInstance, xrSys, stereoViewConfigType, viewCount,
 		&viewCount, configurationViews.data());
 	if (!XR_SUCCEEDED(res))
@@ -149,111 +169,133 @@ bool OvXR::init()
 		return false;
 	}
 
-	std::cout << "View count: " << viewCount << std::endl;
+	// ...and let's print them
+	std::cout << "[OvXR | INFO] View count: " << viewCount << std::endl;
 	for (int i = 0; i < viewCount; i++) {
-		std::cout << "View " << i << std::endl;
-		std::cout << "\tResolution       : Recommended: "
+		std::cout << "\tView " << i << std::endl;
+		std::cout << "\t\tResolution       : Recommended: "
 			<< configurationViews[i].recommendedImageRectWidth << "x"
 			<< configurationViews[i].recommendedImageRectHeight
 			<< ", Max: "
 			<< configurationViews[i].maxImageRectWidth << "x"
 			<< configurationViews[i].maxImageRectHeight << std::endl;
-		std::cout << "\tSwapchain Samples: Recommended: "
+		std::cout << "\t\tSwapchain Samples: Recommended: "
 			<< configurationViews[i].recommendedSwapchainSampleCount << ", Max: "
 			<< configurationViews[i].maxSwapchainSampleCount << std::endl;
 	}
 
 	//--------------------------------------
 	//          SESSION[9]
-
-	void* graphics_binding = platformRenderer->getGraphicsBinding(xrInstance, xrSys);
-	if (graphics_binding == nullptr)
+	// perform the graphics API binding (OpenGL/DirectX) and check the result of the operation
+	graphicsBinding = platformRenderer->getGraphicsBinding(xrInstance, xrSys);
+	if (graphicsBinding == nullptr)
 	{
-		std::cout << "[ERROR] Unable to get Platform Binding (OpenGL/DirectX)!" << std::endl;
+		std::cout << "[OvXR | ERROR] Unable to get Platform Binding (OpenGL/DirectX)!" << std::endl;
 		return false;
 	}
-
-	XrSessionCreateInfo session_create_info = {};
-	session_create_info.type = XR_TYPE_SESSION_CREATE_INFO;
-	session_create_info.systemId = xrSys;
-	session_create_info.next = graphics_binding;
-	res = xrCreateSession(xrInstance, &session_create_info, &xrSession);
+	// prepare the session create info structure
+	XrSessionCreateInfo sessionCreateInfo;
+	sessionCreateInfo.type = XR_TYPE_SESSION_CREATE_INFO;
+	sessionCreateInfo.systemId = xrSys; // link system
+	sessionCreateInfo.next = graphicsBinding; // link to graphics API extension
+	// create the session and check the result of the operation
+	res = xrCreateSession(xrInstance, &sessionCreateInfo, &xrSession);
 	if (!XR_SUCCEEDED(res))
 	{
-		std::cout << "[ERROR] Session creation failed!" << std::endl;
+		std::cout << "[OvXR | ERROR] Session creation failed!" << std::endl;
 		return false;
 	}
-
-	std::cout << "[INFO] Session created successfuly" << std::endl;
-
-    delete graphics_binding;
+	std::cout << "[OvXR | INFO] Session created successfuly" << std::endl;
+	
 
 	//-------------------------------------
 	//          BLEND MODES[10]
-	unsigned int blend_count = 0;
-	res = xrEnumerateEnvironmentBlendModes(xrInstance, xrSys, XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO, 0, &blend_count, nullptr);
-	std::vector<XrEnvironmentBlendMode> blendModes(blend_count);
-	res = xrEnumerateEnvironmentBlendModes(xrInstance, xrSys, XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO, blend_count, &blend_count, blendModes.data());
+	// settings of the environment blend mode
+	unsigned int blendCount = 0;
+	// retrive the enviroment blend modes count and...
+	res = xrEnumerateEnvironmentBlendModes(xrInstance, xrSys, stereoViewConfigType, 0, &blendCount, nullptr);
+	std::vector<XrEnvironmentBlendMode> blendModes(blendCount);
+	// ...enumerate them
+	res = xrEnumerateEnvironmentBlendModes(xrInstance, xrSys, stereoViewConfigType, blendCount, &blendCount, blendModes.data());
+
+	//Check if system supports opaque mode, if not return.
+	//VR applications will generally choose the XR_ENVIRONMENT_BLEND_MODE_OPAQUE blend mode
+	//The composition layers will be displayed with no view of the physical world behind them
+	bool opaqueMode = false;
+	for (XrEnvironmentBlendMode& bm : blendModes) {
+		if (bm == XR_ENVIRONMENT_BLEND_MODE_OPAQUE)
+			opaqueMode = true;
+	}
+
+	if (opaqueMode)
+		std::cout << "[OvXR | INFO] XR_ENVIRONMENT_BLEND_MODE_OPAQUE supported" << std::endl;
+	else {
+		std::cout << "[OvXR | ERROR] XR_ENVIRONMENT_BLEND_MODE_OPAQUE not supported" << std::endl;
+		return false;
+	}
 
 	//--------------------------------------
 	//          SWAPCHAIN[10]
-
 	{
+		// retrive the number of Swapchain image format support by the runtime
 		unsigned int swapchainFormatCount;
 		res = xrEnumerateSwapchainFormats(xrSession, 0, &swapchainFormatCount, nullptr);
 		if (!XR_SUCCEEDED(res))
 		{
+			std::cout << "[OvXR | ERROR] xrEnumerateSwapchainFormats failed!" << std::endl;
 			return false;
 		}
-
-		std::cout << "Runtime supports " << swapchainFormatCount << " swapchain color formats" << std::endl;
+		std::cout << "[OvXR | INFO] Runtime supports " << swapchainFormatCount << " swapchain color formats" << std::endl;
 		int64_t *swapchainFormats = new int64_t[swapchainFormatCount];
+		// retrive the Swapchain image format support by the runtime...
 		res = xrEnumerateSwapchainFormats(xrSession, swapchainFormatCount, &swapchainFormatCount, swapchainFormats);
 		if (!XR_SUCCEEDED(res))
 		{
 			return false;
 		}
 
-		// TODO: Determine which format we want to use instead of using the first one
-		long swapchainFormatToUse = swapchainFormats[0];
+		//... and print them
 		for (int i = 0; i < swapchainFormatCount; i++)
 		{
-			std::cout << "0x" << std::hex << swapchainFormats[i] << std::dec << std::endl;
+			std::cout << "0x" << std::hex << swapchainFormats[i] << std::dec << ", ";
 		}
 		std::cout << std::endl;
 
-        delete [] swapchainFormats;
+		delete[] swapchainFormats;
 	}
-
+	// call to platform specific renderer for initialize swapchains
 	platformRenderer->initSwapchains(xrSession, configurationViews);
-	platformRenderer->initPlatformResources(configurationViews[0].recommendedImageRectWidth
-		, configurationViews[0].recommendedImageRectHeight);
-	std::cout << "swapchain created" << std::endl;
+	// call to platform specific renderer for initialize resources
+	platformRenderer->initPlatformResources(
+		configurationViews[0].recommendedImageRectWidth,
+		configurationViews[0].recommendedImageRectHeight);
+	std::cout << "[OvXR | INFO] Swapchains created" << std::endl;
 
 	return true;
 }
 
 bool OvXR::beginSession()
 {
-	// --- Begin session
+	// begin the session
 	XrSessionBeginInfo sessionBeginInfo;
 	sessionBeginInfo.type = XR_TYPE_SESSION_BEGIN_INFO;
 	sessionBeginInfo.next = NULL;
 	sessionBeginInfo.primaryViewConfigurationType = XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO;
 	XrResult res = xrBeginSession(xrSession, &sessionBeginInfo);
-	std::cout << "Session started!" << std::endl;
+	std::cout << "[OvXR | INFO] Session started" << std::endl;
 
+	// update field
 	sessionRunning = XR_SUCCEEDED(res);
-
+	// setting up the projection composition
 	// projectionLayers struct reused for every frame
 	projectionLayer.type = XR_TYPE_COMPOSITION_LAYER_PROJECTION;
 	projectionLayer.next = nullptr;
 	projectionLayer.layerFlags = 0;
+	// the XrSpace in which the pose of each XrCompositionLayerProjectionView is evaluated over time by the compositor
 	projectionLayer.space = xrSpace;
 	projectionLayer.viewCount = viewCount;
 	// views is const and can't be changed, has to be created new every time
 	projectionLayer.views = nullptr;
-
 	return sessionRunning;
 }
 
@@ -266,13 +308,20 @@ bool OvXR::endSession()
 	if (!XR_SUCCEEDED(xrRequestExitSession(xrSession)))
 		return false;
 
+	// session can be ended
 	xrEndSession(xrSession);
 	sessionRunning = false;
+
+	std::cout << "[OvXR | INFO] Session ended" << std::endl;
+
+	return true;
 }
 
 void OvXR::beginFrame()
 {
-	XrEventDataBuffer runtimeEvent{};
+	// perform an event polling
+	// initialize an event buffer to hold the event output
+	XrEventDataBuffer runtimeEvent;
 	runtimeEvent.type = XR_TYPE_EVENT_DATA_BUFFER;
 	runtimeEvent.next = nullptr;
 
@@ -284,14 +333,15 @@ void OvXR::beginFrame()
 	frameWaitInfo.type = XR_TYPE_FRAME_WAIT_INFO;
 	frameWaitInfo.next = nullptr;
 
+	// Wait for a new frame
 	XrResult res = xrWaitFrame(xrSession, &frameWaitInfo, &frameState);
 	if (!XR_SUCCEEDED(res))
 	{
-		std::cout << "[ERROR] wait frame failed!" << std::endl;
+		std::cout << "[OvXR | ERROR] xrWaitFrame failed!" << std::endl;
 		return;
 	}
 
-	// --- Handle runtime Events
+	// Handle runtime Events
 	// we do this right after xrWaitFrame() so we can go idle or
 	// break out of the main render loop as early as possible into
 	// the frame and don't have to uselessly render or submit one
@@ -299,18 +349,18 @@ void OvXR::beginFrame()
 
 	if (pollResult == XR_SUCCESS)
 	{
-		if (eventCallbacks[runtimeEvent.type])
-			eventCallbacks[runtimeEvent.type](runtimeEvent);
+		if (eventCallbacks[runtimeEvent.type]) // if event is registered...
+			eventCallbacks[runtimeEvent.type](runtimeEvent); // ...invoke it
 	}
 	else if (pollResult == XR_EVENT_UNAVAILABLE) {
 		// this is the usual case
 	}
 	else {
-		std::cout << "Failed to poll events!" << std::endl;
+		std::cout << "[OvXR | ERROR] xrPollEvent failed!" << std::endl;
 		return;
 	}
 
-	// --- Create projection matrices and view matrices for each eye
+	// create projection matrices and view matrices for each eye
 	XrViewLocateInfo viewLocateInfo;
 	viewLocateInfo.next = nullptr;
 	viewLocateInfo.viewConfigurationType = XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO;
@@ -323,125 +373,140 @@ void OvXR::beginFrame()
 	viewState.next = nullptr;
 	viewState.viewStateFlags = 0;
 	unsigned int viewCountOutput;
-
+	// retrieve the viewer pose and projection parameters needed to render each view
+	// for use in a composition projection layer
 	res = xrLocateViews(xrSession, &viewLocateInfo, &viewState,
 		viewCount, &viewCountOutput, views.data());
 	if (!XR_SUCCEEDED(res))
 	{
-		std::cout << "[ERROR] locate views failed!" << std::endl;
+		std::cout << "[OvXR | ERROR] xrLocateViews failed!" << std::endl;
 		return;
 	}
 
 	XrFrameBeginInfo frameBeginInfo;
 	frameBeginInfo.type = XR_TYPE_FRAME_BEGIN_INFO;
 	frameBeginInfo.next = nullptr;
-
+	// begin the frame
 	res = xrBeginFrame(xrSession, &frameBeginInfo);
 	if (!XR_SUCCEEDED(res))
 	{
-		std::cout << "[ERROR] locate views failed!" << std::endl;
+		std::cout << "[OvXR | ERROR] xrBeginFrame failed!" << std::endl;
 		return;
 	}
-
-
+	// setting up component for the (immediately after frame is built) submission
 	xrPredicedDisplayTime = frameState.predictedDisplayTime;
 	projectionViews = std::vector<XrCompositionLayerProjectionView>(viewCount);
 }
 
 void OvXR::endFrame()
 {
+	// set the array of type XrCompositionLayerProjectionView containing each projection layer view
 	projectionLayer.views = projectionViews.data();
-	const XrCompositionLayerBaseHeader* const projectionlayers[1] = {
-		(const XrCompositionLayerBaseHeader* const)& projectionLayer };
+	std::vector<XrCompositionLayerBaseHeader*> projectionlayers;
+	projectionlayers.push_back(reinterpret_cast<XrCompositionLayerBaseHeader*>(&projectionLayer));
 
 	XrFrameEndInfo frameEndInfo;
-	frameEndInfo.type = XR_TYPE_FRAME_END_INFO;
-	frameEndInfo.displayTime = xrPredicedDisplayTime;
-	frameEndInfo.layerCount = 1;
-	frameEndInfo.layers = projectionlayers;
-	frameEndInfo.environmentBlendMode = XR_ENVIRONMENT_BLEND_MODE_OPAQUE;
+	frameEndInfo.type					= XR_TYPE_FRAME_END_INFO;
+	frameEndInfo.displayTime			= xrPredicedDisplayTime;
+	frameEndInfo.layerCount				= (uint32_t)projectionlayers.size(); // the number of composition layers in this frame
+	frameEndInfo.layers					= projectionlayers.data();
+	frameEndInfo.environmentBlendMode	= XR_ENVIRONMENT_BLEND_MODE_OPAQUE;
 	frameEndInfo.next = nullptr;
-
+	// submit frame
 	XrResult res = xrEndFrame(xrSession, &frameEndInfo);
 	if (!XR_SUCCEEDED(res))
 	{
-		std::cout << "[ERROR] failed to end frame!" << std::endl;
+		std::cout << "[OvXR | ERROR] xrEndFrame failed!" << std::endl;
 		return;
 	}
 }
 
 void OvXR::lockSwapchain(OvEye eye)
 {
+	// acquire the swapchain, delegate this to platform specific render
 	XrSwapchain swapchain = platformRenderer->getSwapchian(eye);
 
+	// acquire the swapchain image
 	XrSwapchainImageAcquireInfo swapchainImageAcquireInfo;
 	swapchainImageAcquireInfo.type = XR_TYPE_SWAPCHAIN_IMAGE_ACQUIRE_INFO;
 	swapchainImageAcquireInfo.next = nullptr;
-
+	// swapchain is the swapchain from which to acquire an image
+	// textureIndex is a pointer to the image index that was acquired
 	XrResult res = xrAcquireSwapchainImage(swapchain, &swapchainImageAcquireInfo, &textureIndex);
 	if (!XR_SUCCEEDED(res))
 	{
-		std::cout << "[ERROR] xrAcquireSwapchainImage failed!" << std::endl;
+		std::cout << "[OvXR | ERROR] xrAcquireSwapchainImage failed!" << std::endl;
 		return;
 	}
-
+	// Before an application can begin writing to a swapchain image, it must first wait on the
+	// image to avoid writing to it before the compositor has finished reading from it.
 	XrSwapchainImageWaitInfo swapchainImageWaitInfo;
 	swapchainImageWaitInfo.type = XR_TYPE_SWAPCHAIN_IMAGE_WAIT_INFO;
 	swapchainImageWaitInfo.next = nullptr;
-	swapchainImageWaitInfo.timeout = 1000;
+	// how many nanoseconds the call should block waiting for the image to become available for writing
+	swapchainImageWaitInfo.timeout = XR_INFINITE_DURATION; 
+	// wait for the image
 	res = xrWaitSwapchainImage(swapchain, &swapchainImageWaitInfo);
 	if (!XR_SUCCEEDED(res))
 	{
-		std::cout << "[ERROR] failed to wait for swapchain image!" << std::endl;
+		std::cout << "[OvXR | ERROR] Failed to wait for swapchain image!" << std::endl;
 		return;
 	}
 
+	// setting up the projection composition layer
 	projectionViews[eye].type = XR_TYPE_COMPOSITION_LAYER_PROJECTION_VIEW;
 	projectionViews[eye].next = nullptr;
-	projectionViews[eye].pose = views[eye].pose;
-	projectionViews[eye].fov = views[eye].fov;
-	projectionViews[eye].subImage.swapchain = swapchain;
+	projectionViews[eye].pose = views[eye].pose; // location and orientation of this projection element
+	projectionViews[eye].fov = views[eye].fov; // fov for this projection element
+	projectionViews[eye].subImage.swapchain = swapchain; // the image layer to use
 	projectionViews[eye].subImage.imageArrayIndex = 0;
 	projectionViews[eye].subImage.imageRect.offset.x = 0;
 	projectionViews[eye].subImage.imageRect.offset.y = 0;
 	projectionViews[eye].subImage.imageRect.extent.width = configurationViews[eye].recommendedImageRectWidth;
 	projectionViews[eye].subImage.imageRect.extent.height = configurationViews[eye].recommendedImageRectHeight;
 
-
+	// prepares platform-specific render
 	platformRenderer->beginEyeFrame(eye, textureIndex);
 }
 
 void OvXR::unlockSwapchain(OvEye eye)
 {
+	// completes platform-specific render...
 	platformRenderer->endEyeRender(eye, textureIndex);
 	XrSwapchain swapchain = platformRenderer->getSwapchian(eye);
 
 	XrSwapchainImageReleaseInfo swapchainImageReleaseInfo;
 	swapchainImageReleaseInfo.type = XR_TYPE_SWAPCHAIN_IMAGE_RELEASE_INFO;
 	swapchainImageReleaseInfo.next = nullptr;
+	// ... and finally release the swapchain image
 	XrResult res = xrReleaseSwapchainImage(swapchain, &swapchainImageReleaseInfo);
 	if (!XR_SUCCEEDED(res))
 	{
-		std::cout << "[ERROR] failed to release swapchain image!" << std::endl;
+		std::cout << "[OvXR | ERROR] Failed to release swapchain image!" << std::endl;
 		return;
 	}
 }
 
 bool OvXR::free()
 {
-    if(!sessionRunning)
-        return false;
+	if (sessionRunning)
+		return false;
 
-	endSession();
 	//free platfomr resources
 	platformRenderer->free();
 
+	// destroy space
 	if (xrSpace != XR_NULL_HANDLE)
 		xrDestroySpace(xrSpace);
+	// destroy session
 	if (xrSession != XR_NULL_HANDLE)
 		xrDestroySession(xrSession);
+	// destroy instance
 	if (xrInstance != XR_NULL_HANDLE)
 		xrDestroyInstance(xrInstance);
+
+	if (graphicsBinding)
+		delete graphicsBinding;
 
 	return true;
 }
@@ -454,37 +519,30 @@ bool OvXR::setReferenceSpace(XrPosef pose, XrReferenceSpaceType spaceType)
 	localSpaceCreateInfo.next = NULL;
 	localSpaceCreateInfo.referenceSpaceType = spaceType;
 	localSpaceCreateInfo.poseInReferenceSpace = pose;
-
+	// Sets reference space of application
 	XrResult result = xrCreateReferenceSpace(xrSession, &localSpaceCreateInfo, &xrSpace);
-
 	return XR_SUCCEEDED(result);
 }
 
 std::string OvXR::getRuntimeName()
 {
-	XrResult result;
-
+	XrResult res;
 	XrInstanceProperties instanceProperties;
 	instanceProperties.type = XR_TYPE_INSTANCE_PROPERTIES;
 	instanceProperties.next = NULL;
-
-	result = xrGetInstanceProperties(xrInstance, &instanceProperties);
-	//if (!xr_result(NULL, result, "Failed to get instance info"))
-		//return 1;
-
-
+	res = xrGetInstanceProperties(xrInstance, &instanceProperties);
 	std::stringstream ss;
-
 	ss << instanceProperties.runtimeName << " v"
 		<< XR_VERSION_MAJOR(instanceProperties.runtimeVersion) << "."
 		<< XR_VERSION_MINOR(instanceProperties.runtimeVersion) << "."
 		<< XR_VERSION_PATCH(instanceProperties.runtimeVersion);
-
+	// return runtime name
 	return ss.str();
 }
 
 void OvXR::setCallback(XrStructureType event, std::function<void(XrEventDataBuffer)> callback)
 {
+	// set event caalback
 	eventCallbacks[event] = callback;
 }
 
@@ -495,31 +553,42 @@ std::string OvXR::getManufacturerName()
 	systemProperties.next = NULL;
 	systemProperties.graphicsProperties = { 0 };
 	systemProperties.trackingProperties = { 0 };
-
 	xrGetSystemProperties(xrInstance, xrSys, &systemProperties);
-
+	// return manufactuter name
 	return systemProperties.systemName;
 }
 
 unsigned int OvXR::getHmdIdealHorizRes()
 {
+	if (configurationViews.size() == 0) {
+		return 0;
+	}
+
+	// return ideal horizontal resolution
 	return configurationViews[0].recommendedImageRectWidth;
 }
 
 unsigned int OvXR::getHmdIdealVertRes()
 {
+	if (configurationViews.size() == 0) {
+		return 0;
+	}
+
+	// return ideal vertical resolution
 	return configurationViews[0].recommendedImageRectHeight;
 }
 
 glm::mat4 OvXR::getProjMatrix(OvEye eye, float nearPlane, float farPlane)
 {
-	return glm::perspective(views[eye].fov.angleUp,
+	// return the projection matrix for the given eye and plane params
+	return glm::perspective(views[eye].fov.angleUp - views[eye].fov.angleDown,
 		(float)getHmdIdealHorizRes() / (float)getHmdIdealVertRes(),
 		nearPlane, farPlane);
 }
 
 glm::mat4 OvXR::getEyeModelviewMatrix(OvEye eye, const glm::mat4 &baseMat)
 {
+	// rotation
 	glm::mat4 rot = glm::mat4{
 	glm::quat{ views[eye].pose.orientation.w,
 		 views[eye].pose.orientation.x,
@@ -527,7 +596,7 @@ glm::mat4 OvXR::getEyeModelviewMatrix(OvEye eye, const glm::mat4 &baseMat)
 		 views[eye].pose.orientation.z
 		}
 	};
-
+	// translation
 	glm::mat4 trans = glm::translate(glm::mat4{ 1.f },
 		glm::vec3{
 		views[eye].pose.position.x,
@@ -538,21 +607,24 @@ glm::mat4 OvXR::getEyeModelviewMatrix(OvEye eye, const glm::mat4 &baseMat)
 
 	glm::mat4 viewMatrix = trans * rot;
 	glm::mat4 inverseViewMatrix = glm::inverse(viewMatrix * baseMat);
-
+	// Get the eye-to-head modelview matrix for the given eye
 	return inverseViewMatrix;
 }
 
 XrInstance OvXR::getInstane()
 {
+	// return instance
 	return xrInstance;
 }
 
 XrSession OvXR::getSession()
 {
+	// return session
 	return xrSession;
 }
 
 XrSystemId OvXR::getSystem()
 {
+	// return system ID
 	return xrSys;
 }

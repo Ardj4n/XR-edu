@@ -370,7 +370,7 @@ void * DirectXRenderer::getGraphicsBinding(XrInstance &xrInstance, XrSystemId &x
 		++i;
 	}
 
-	std::wcout << "Using graphics adapter " << adapterDesc.Description << std::endl;
+	std::wcout << "[OvXR | INFO] Using graphics adapter " << adapterDesc.Description << std::endl;
 
 	unsigned int creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #ifdef _DEBUG
@@ -541,7 +541,7 @@ void DirectXRenderer::initInterop()
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (status != GL_FRAMEBUFFER_COMPLETE)
 	{
-		std::cout << "[ERROR] FBO not complete (error: " << status << ")" << std::endl;
+		std::cout << "[OvXR | ERROR] FBO not complete (error: " << status << ")" << std::endl;
 		return;
 	}
 

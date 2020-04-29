@@ -181,7 +181,7 @@ public:
 
 
     /**
-     * Get the eye-to-head modelview matrix for the given eye.
+     * Get the eye modelview matrix for the given eye.
      * @param eye left or right eye (use enum)
 	 * @param baseMat enables support for moving user position with keyboard and mouse
      * @return eye-to-head modelview matrix ready for OpenGL
@@ -211,8 +211,9 @@ private:
 	bool sessionRunning;
 	// Application name
     std::string appName;
-	// Platform-specific rendering implementation reference
+	// Platform-specific rendering implementation reference and graphics binding structure used during session creation
 	PlatformRenderer *platformRenderer;
+	void* graphicsBinding;
    
 	// OpenXR components
     XrInstance xrInstance;
