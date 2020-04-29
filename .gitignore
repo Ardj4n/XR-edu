@@ -79,3 +79,4 @@ TransformApp/x64/*
 DxT/*
 dependencies/freeimage/lib
 *.ppm
+!dependencies/openxr/**/*.pdb
