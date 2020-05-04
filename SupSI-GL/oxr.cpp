@@ -198,6 +198,7 @@ bool OvXR::init()
 	sessionCreateInfo.type = XR_TYPE_SESSION_CREATE_INFO;
 	sessionCreateInfo.systemId = xrSys; // link system
 	sessionCreateInfo.next = graphicsBinding; // link to graphics API extension
+    sessionCreateInfo.createFlags = 0;
 	// create the session and check the result of the operation
 	res = xrCreateSession(xrInstance, &sessionCreateInfo, &xrSession);
 	if (!XR_SUCCEEDED(res))
