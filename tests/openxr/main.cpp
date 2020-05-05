@@ -52,30 +52,28 @@ bool active = false;
 OvXR *oxr = nullptr;
 
 #define  ASSERT_WITH_MESSAGE(res, msg)				\
-{													\
 	if (!(res) ) {									\
 		std::cerr << msg << std::endl;				\
 		std::cerr << "TEST FAILED" << std::endl;	\
 		abort();									\
-	}												\
-}
+    }
 
 void testOpenXR() 
 {
 	MockRenderer* pr = new MockRenderer{ platformRendererBuilder() };	
-	ASSERT_WITH_MESSAGE(!pr->getRenderExtensionName().empty(), "extension name must not be empty");
+    ASSERT_WITH_MESSAGE(!pr->getRenderExtensionName().empty(), "extension name must not be empty")
 
 	oxr = new OvXR();
 
-	ASSERT_WITH_MESSAGE(oxr->getInstane() == XR_NULL_HANDLE, "xrInstance must be null");
-	ASSERT_WITH_MESSAGE(oxr->getSession() == XR_NULL_HANDLE, "xrSession must be null");
+    ASSERT_WITH_MESSAGE(oxr->getInstane() == XR_NULL_HANDLE, "xrInstance must be null")
+    ASSERT_WITH_MESSAGE(oxr->getSession() == XR_NULL_HANDLE, "xrSession must be null")
 
 	oxr->setPlatformRenderer(pr);
 
-	ASSERT_WITH_MESSAGE(oxr->init(), "failed OvXR initialization");
+    ASSERT_WITH_MESSAGE(oxr->init(), "failed OvXR initialization")
 
-	ASSERT_WITH_MESSAGE(oxr->getInstane() != XR_NULL_HANDLE, "xrInstance must not be null");
-	ASSERT_WITH_MESSAGE(oxr->getSession() != XR_NULL_HANDLE, "xrSession must not be null");
+    ASSERT_WITH_MESSAGE(oxr->getInstane() != XR_NULL_HANDLE, "xrInstance must not be null")
+    ASSERT_WITH_MESSAGE(oxr->getSession() != XR_NULL_HANDLE, "xrSession must not be null")
 
 	XrQuaternionf quat;
 	quat.x = quat.y = quat.z = 0.f;
@@ -87,50 +85,50 @@ void testOpenXR()
 	identityPose.position = pos;
 
 	bool res = oxr->setReferenceSpace(identityPose, XR_REFERENCE_SPACE_TYPE_LOCAL);
-	ASSERT_WITH_MESSAGE(res, "failed setReferenceSpace");
+    ASSERT_WITH_MESSAGE(res, "failed setReferenceSpace")
 
 	auto cb = [](XrEventDataBuffer) { active = true; };
 	oxr->setCallback(XR_TYPE_EVENT_DATA_SESSION_STATE_CHANGED, cb);
 
 	res = oxr->beginSession();
-	ASSERT_WITH_MESSAGE(res, "failed beginSession");
+    ASSERT_WITH_MESSAGE(res, "failed beginSession")
 
 	for (int i = 0; i < 100; i++) {
 		res = oxr->beginFrame();
-		ASSERT_WITH_MESSAGE(res, "failed beginFrame");
+        ASSERT_WITH_MESSAGE(res, "failed beginFrame")
 
 		for (int j = 0; j < OvXR::EYE_LAST; j++) {
 			OvXR::OvEye eye = (OvXR::OvEye) j;
 
 			res = oxr->lockSwapchain(eye);
-			ASSERT_WITH_MESSAGE(res, "failed lockSwapchain");
+            ASSERT_WITH_MESSAGE(res, "failed lockSwapchain")
 
 			res = oxr->unlockSwapchain(eye);
-			ASSERT_WITH_MESSAGE(res, "failed unlockSwapchain");
+            ASSERT_WITH_MESSAGE(res, "failed unlockSwapchain")
 		}
 
 		res = oxr->endFrame();
-		ASSERT_WITH_MESSAGE(res, "failed endFrame");
+        ASSERT_WITH_MESSAGE(res, "failed endFrame")
 	}
 
-	ASSERT_WITH_MESSAGE(active, "callback must have been called");
+    ASSERT_WITH_MESSAGE(active, "callback must have been called")
 	
 	res = oxr->endSession();
-	ASSERT_WITH_MESSAGE(res, "failed endSession");
+    ASSERT_WITH_MESSAGE(res, "failed endSession")
 
 	res = oxr->free();
-	ASSERT_WITH_MESSAGE(res, "failed free");
+    ASSERT_WITH_MESSAGE(res, "failed free")
 
 	std::map<std::string, int> map = pr->getMap();
 
-	ASSERT_WITH_MESSAGE(map["free"] == 1					, "wrong number of 'free' calls");
-	ASSERT_WITH_MESSAGE(map["initSwapchains"] == 1			, "wrong number of 'initSwapchains' calls");
-	ASSERT_WITH_MESSAGE(map["initPlatformResources"] == 1	, "wrong number of 'initPlatformResources' calls");
-	ASSERT_WITH_MESSAGE(map["getSwapchain"] == 400			, "wrong number of 'getSwapchain' calls");
-	ASSERT_WITH_MESSAGE(map["getRenderExtensionName"] == 2	, "wrong number of 'getRenderExtensionName' calls");
-	ASSERT_WITH_MESSAGE(map["getGraphicsBinding"] == 1		, "wrong number of 'getGraphicsBinding' calls");
-	ASSERT_WITH_MESSAGE(map["beginEyeFrame"] == 200			, "wrong number of 'beginEyeFrame' calls");
-	ASSERT_WITH_MESSAGE(map["endEyeFrame"] == 200			, "wrong number of 'endEyeFrame' calls");
+    ASSERT_WITH_MESSAGE(map["free"] == 1					, "wrong number of 'free' calls")
+    ASSERT_WITH_MESSAGE(map["initSwapchains"] == 1			, "wrong number of 'initSwapchains' calls")
+    ASSERT_WITH_MESSAGE(map["initPlatformResources"] == 1	, "wrong number of 'initPlatformResources' calls")
+    ASSERT_WITH_MESSAGE(map["getSwapchain"] == 400			, "wrong number of 'getSwapchain' calls")
+    ASSERT_WITH_MESSAGE(map["getRenderExtensionName"] == 2	, "wrong number of 'getRenderExtensionName' calls")
+    ASSERT_WITH_MESSAGE(map["getGraphicsBinding"] == 1		, "wrong number of 'getGraphicsBinding' calls")
+    ASSERT_WITH_MESSAGE(map["beginEyeFrame"] == 200			, "wrong number of 'beginEyeFrame' calls")
+    ASSERT_WITH_MESSAGE(map["endEyeFrame"] == 200			, "wrong number of 'endEyeFrame' calls")
 
 }
 

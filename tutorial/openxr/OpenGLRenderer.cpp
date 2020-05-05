@@ -94,7 +94,7 @@ bool OpenGLRenderer::initSwapchains(XrSession &xrSession, std::vector<XrViewConf
         swapchainCreateInfo.next			= nullptr;
 
         //create swapchain
-        xrCreateSwapchain(xrSession, &swapchainCreateInfo, &swapchains[i].handle);
+        res = xrCreateSwapchain(xrSession, &swapchainCreateInfo, &swapchains[i].handle);
         if (!XR_SUCCEEDED(res))
         {
             std::cout << "[ERROR] Swapchain creation failed!" << std::endl;
@@ -141,6 +141,7 @@ bool OpenGLRenderer::initPlatformResources(int width, int height)
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24,
                  sizeX, sizeY, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, 0);
 
+    return true;
 }
 
 XrSwapchain OpenGLRenderer::getSwapchain(int eye)
@@ -164,12 +165,14 @@ bool OpenGLRenderer::beginEyeFrame(int eye, int textureIndex)
 
     //reset GL view port
     glViewport(0, 0, sizeX, sizeY);
+    return true;
 }
 
 bool OpenGLRenderer::endEyeFrame(int eye, int textureIndex)
 {
     //bind default framebuffer
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+    return true;
 }
 
 bool OpenGLRenderer::free()

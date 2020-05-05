@@ -1,3 +1,9 @@
+/**
+ * @file		ovr.h
+ * @brief	Self-contained helper class for interfacing OpenGL and OpenVR. Shortened version of Overvision's OvXR module.
+ *
+ * @author	Achille Peternier (C) SUPSI [achille.peternier@supsi.ch]
+ */
 #pragma once
 
 

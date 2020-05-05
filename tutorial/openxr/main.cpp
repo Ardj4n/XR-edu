@@ -45,6 +45,12 @@
 // #DEFINE //
 /////////////
 
+#ifdef _WINDOWS
+    #define STD_CALL    __stdcall
+#else
+    #define STD_CALL
+#endif
+
   // Window size:
 #define APP_WINDOWSIZEX   800
 #define APP_WINDOWSIZEY   600 
@@ -141,7 +147,7 @@ const char *passthroughFS = R"(
 /**
  * Debug message callback for OpenGL. See https://www.opengl.org/wiki/Debug_Output
  */
-void __stdcall DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam)
+void STD_CALL DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam)
 {
 	std::cout << "OpenGL says: \"" << std::string(message) << "\"" << std::endl;
 }
