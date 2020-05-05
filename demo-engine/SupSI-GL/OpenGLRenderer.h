@@ -33,12 +33,12 @@ public:
     bool free();
 
     bool beginEyeFrame(int eye, int textureIndex);
-    bool endEyeRender(int eye, int textureIndex);
+    bool endEyeFrame(int eye, int textureIndex);
 
     void* getGraphicsBinding(XrInstance &xrInstance, XrSystemId &xrSystem);
     bool initSwapchains(XrSession &xrSession, std::vector<XrViewConfigurationView> &views);
 
-    XrSwapchain getSwapchian(int eye);
+    XrSwapchain getSwapchain(int eye);
 
 private:
     struct Swapchain {

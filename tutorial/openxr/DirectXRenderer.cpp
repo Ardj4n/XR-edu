@@ -432,7 +432,7 @@ void DirectXRenderer::initInterop()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-XrSwapchain DirectXRenderer::getSwapchian(int eye)
+XrSwapchain DirectXRenderer::getSwapchain(int eye)
 {
 	return swapchains[eye].handle;
 }
@@ -464,7 +464,7 @@ bool DirectXRenderer::beginEyeFrame(int eye, int textureIndex)
 	return true;
 }
 
-bool DirectXRenderer::endEyeRender(int eye, int textureIndex)
+bool DirectXRenderer::endEyeFrame(int eye, int textureIndex)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	//wglDXUnlockObjectsNV disables rendering with OpenGL

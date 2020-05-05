@@ -193,6 +193,7 @@ bool OvXR::init()
 		std::cout << "[OvXR | ERROR] Unable to get Platform Binding (OpenGL/DirectX)!" << std::endl;
 		return false;
 	}
+
 	// prepare the session create info structure
 	XrSessionCreateInfo sessionCreateInfo;
 	sessionCreateInfo.type = XR_TYPE_SESSION_CREATE_INFO;
@@ -245,12 +246,13 @@ bool OvXR::init()
 			std::cout << "[OvXR | ERROR] xrEnumerateSwapchainFormats failed!" << std::endl;
 			return false;
 		}
-		std::cout << "[OvXR | INFO] Runtime supports " << swapchainFormatCount << " swapchain color formats" << std::endl;
+		std::cout << "[OvXR | INFO] Runtime supports " << swapchainFormatCount << " swapchain color formats:" << std::endl;
 		int64_t *swapchainFormats = new int64_t[swapchainFormatCount];
 		// retrive the Swapchain image format support by the runtime...
 		res = xrEnumerateSwapchainFormats(xrSession, swapchainFormatCount, &swapchainFormatCount, swapchainFormats);
 		if (!XR_SUCCEEDED(res))
 		{
+			std::cout << "[OvXR | ERROR] xrEnumerateSwapchainFormats failed!" << std::endl;
 			return false;
 		}
 
@@ -264,11 +266,20 @@ bool OvXR::init()
 		delete[] swapchainFormats;
 	}
 	// call to platform specific renderer for initialize swapchains
-	platformRenderer->initSwapchains(xrSession, configurationViews);
+	if (!platformRenderer->initSwapchains(xrSession, configurationViews))
+	{
+		std::cout << "[OvXR | ERROR] Swapchains cration failed" << std::endl;
+		return false;
+	}
+
 	// call to platform specific renderer for initialize resources
-	platformRenderer->initPlatformResources(
+	if(!platformRenderer->initPlatformResources(
 		configurationViews[0].recommendedImageRectWidth,
-		configurationViews[0].recommendedImageRectHeight);
+		configurationViews[0].recommendedImageRectHeight))
+	{
+		std::cout << "[OvXR | ERROR] Platform resources initialization failed" << std::endl;
+		return false;
+	}
 	std::cout << "[OvXR | INFO] Swapchains created" << std::endl;
 
 	return true;
@@ -317,7 +328,7 @@ bool OvXR::endSession()
 	return true;
 }
 
-void OvXR::beginFrame()
+bool OvXR::beginFrame()
 {
 	// perform an event polling
 	// initialize an event buffer to hold the event output
@@ -338,7 +349,7 @@ void OvXR::beginFrame()
 	if (!XR_SUCCEEDED(res))
 	{
 		std::cout << "[OvXR | ERROR] xrWaitFrame failed!" << std::endl;
-		return;
+		return false;
 	}
 
 	// Handle runtime Events
@@ -357,7 +368,7 @@ void OvXR::beginFrame()
 	}
 	else {
 		std::cout << "[OvXR | ERROR] xrPollEvent failed!" << std::endl;
-		return;
+		return false;
 	}
 
 	// create projection matrices and view matrices for each eye
@@ -380,7 +391,7 @@ void OvXR::beginFrame()
 	if (!XR_SUCCEEDED(res))
 	{
 		std::cout << "[OvXR | ERROR] xrLocateViews failed!" << std::endl;
-		return;
+		return false;
 	}
 
 	XrFrameBeginInfo frameBeginInfo;
@@ -391,14 +402,15 @@ void OvXR::beginFrame()
 	if (!XR_SUCCEEDED(res))
 	{
 		std::cout << "[OvXR | ERROR] xrBeginFrame failed!" << std::endl;
-		return;
+		return false;
 	}
 	// setting up component for the (immediately after frame is built) submission
 	xrPredicedDisplayTime = frameState.predictedDisplayTime;
 	projectionViews = std::vector<XrCompositionLayerProjectionView>(viewCount);
+	return true;
 }
 
-void OvXR::endFrame()
+bool OvXR::endFrame()
 {
 	// set the array of type XrCompositionLayerProjectionView containing each projection layer view
 	projectionLayer.views = projectionViews.data();
@@ -417,14 +429,20 @@ void OvXR::endFrame()
 	if (!XR_SUCCEEDED(res))
 	{
 		std::cout << "[OvXR | ERROR] xrEndFrame failed!" << std::endl;
-		return;
+		return false;
 	}
+	return true;
 }
 
-void OvXR::lockSwapchain(OvEye eye)
+bool OvXR::lockSwapchain(OvEye eye)
 {
 	// acquire the swapchain, delegate this to platform specific render
-	XrSwapchain swapchain = platformRenderer->getSwapchian(eye);
+	XrSwapchain swapchain = platformRenderer->getSwapchain(eye);
+	if (swapchain == XR_NULL_HANDLE) 
+	{
+		std::cout << "[OvXR | ERROR] PlafformRenderer returned an invalid XrSwapchain!" << std::endl;
+		return false;
+	}
 
 	// acquire the swapchain image
 	XrSwapchainImageAcquireInfo swapchainImageAcquireInfo;
@@ -436,7 +454,7 @@ void OvXR::lockSwapchain(OvEye eye)
 	if (!XR_SUCCEEDED(res))
 	{
 		std::cout << "[OvXR | ERROR] xrAcquireSwapchainImage failed!" << std::endl;
-		return;
+		return false;
 	}
 	// Before an application can begin writing to a swapchain image, it must first wait on the
 	// image to avoid writing to it before the compositor has finished reading from it.
@@ -450,7 +468,7 @@ void OvXR::lockSwapchain(OvEye eye)
 	if (!XR_SUCCEEDED(res))
 	{
 		std::cout << "[OvXR | ERROR] Failed to wait for swapchain image!" << std::endl;
-		return;
+		return false;
 	}
 
 	// setting up the projection composition layer
@@ -466,14 +484,24 @@ void OvXR::lockSwapchain(OvEye eye)
 	projectionViews[eye].subImage.imageRect.extent.height = configurationViews[eye].recommendedImageRectHeight;
 
 	// prepares platform-specific render
-	platformRenderer->beginEyeFrame(eye, textureIndex);
+	if (!platformRenderer->beginEyeFrame(eye, textureIndex))
+	{
+		std::cout << "[OvXR | ERROR] Plafform-specific render setup failed!" << std::endl;
+		return false;
+	}
+	return true;
 }
 
-void OvXR::unlockSwapchain(OvEye eye)
+bool OvXR::unlockSwapchain(OvEye eye)
 {
 	// completes platform-specific render...
-	platformRenderer->endEyeRender(eye, textureIndex);
-	XrSwapchain swapchain = platformRenderer->getSwapchian(eye);
+	if(!platformRenderer->endEyeFrame(eye, textureIndex))
+	{
+		std::cout << "[OvXR | ERROR] Plafform-specific render finalization failed!" << std::endl;
+		return false;
+	}
+
+	XrSwapchain swapchain = platformRenderer->getSwapchain(eye);
 
 	XrSwapchainImageReleaseInfo swapchainImageReleaseInfo;
 	swapchainImageReleaseInfo.type = XR_TYPE_SWAPCHAIN_IMAGE_RELEASE_INFO;
@@ -483,8 +511,10 @@ void OvXR::unlockSwapchain(OvEye eye)
 	if (!XR_SUCCEEDED(res))
 	{
 		std::cout << "[OvXR | ERROR] Failed to release swapchain image!" << std::endl;
-		return;
+		return false;
 	}
+
+	return true;
 }
 
 bool OvXR::free()
@@ -627,4 +657,9 @@ XrSystemId OvXR::getSystem()
 {
 	// return system ID
 	return xrSys;
+}
+
+void OvXR::setPlatformRenderer(PlatformRenderer * ext)
+{
+	platformRenderer = ext;
 }

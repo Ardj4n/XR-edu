@@ -71,7 +71,7 @@ public:
 	 * @param textureIndex swapchain image index
 	 * @return TF
 	 */
-	virtual bool endEyeRender(int eye, int textureIndex) = 0;
+	virtual bool endEyeFrame(int eye, int textureIndex) = 0;
 
 
 	/**
@@ -79,5 +79,5 @@ public:
 	 * @param eye left or right eye
 	 * @return XrSwapchain
 	 */
-	virtual XrSwapchain getSwapchian(int eye) = 0;
+	virtual XrSwapchain getSwapchain(int eye) = 0;
 };

@@ -1,6 +1,6 @@
 /**
  * @file		main.cpp
- * @brief	OpenVR kickstart with OGL 4.4
+ * @brief	OpenXR kickstart with OGL 4.4
  *
  * @author	Achille Peternier (C) SUPSI [achille.peternier@supsi.ch]
  */
@@ -36,7 +36,7 @@
 // Fbo class:
 #include "fbo.h"
 
-// OpenVR:
+// OpenXR:
 #include "oxr.h"
 
 
@@ -82,7 +82,7 @@ Shader *passthroughShader = nullptr;
 int ptProjLoc = -1;
 int ptMvLoc = -1;
 
-// OpenVR interface:
+// OpenXR interface:
 OvXR *oxr = nullptr;
 
 
@@ -277,11 +277,11 @@ void reshapeCallback(int width, int height)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
- * Window close callback. Required to shutdown OpenVR before the context is released.
+ * Window close callback. Required to shutdown OpenXR before the context is released.
  */
 void closeCallback()
 {
-	// Free OpenVR:   
+	// Free OpenXR:   
 	oxr->free();
 	delete oxr;
 
@@ -314,7 +314,7 @@ void closeCallback()
 int main(int argc, char *argv[])
 {
 	// Credits:
-	std::cout << "OpenGL 4.4 and OpenVR, A. Peternier (C) SUPSI" << std::endl;
+	std::cout << "OpenGL 4.4 and OpenXR, A. Peternier (C) SUPSI" << std::endl;
 	std::cout << std::endl;
 
 	// Init GLUT and set some context flags:
@@ -328,7 +328,7 @@ int main(int argc, char *argv[])
 	glutInitWindowPosition(100, 100);
 	glutInitWindowSize(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
-	windowId = glutCreateWindow("Minimal OpenVR example");
+	windowId = glutCreateWindow("Minimal OpenXR example");
 
 	// Init all available OpenGL extensions:
 	glewExperimental = GL_TRUE;
@@ -351,7 +351,7 @@ int main(int argc, char *argv[])
 	glDebugMessageCallback((GLDEBUGPROC)DebugCallback, nullptr);
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
-	// Init OpenVR:   
+	// Init OpenXR:   
 	oxr = new OvXR();
 	if (oxr->init() == false)
 	{

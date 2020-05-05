@@ -1,9 +1,3 @@
-/**
- * @file		ovr.h
- * @brief	Self-contained helper class for interfacing OpenGL and OpenVR. Shortened version of Overvision's OvXR module.
- *
- * @author	Achille Peternier (C) SUPSI [achille.peternier@supsi.ch]
- */
 #pragma once
 
 
@@ -98,28 +92,32 @@ public:
 	/**
 	 * @brief Called prior to the start of frame rendering.
 	 * updates view locations and polls events
+	 * @return TF
 	 */
-	void beginFrame();
+	bool beginFrame();
 
 
 	/**
 	 * @brief Acquire the image from the swapchain before graphics API strats rendering.
 	 * @param eye left or right eye
+	 * @return TF
 	 */
-	void lockSwapchain(OvEye eye);
+	bool lockSwapchain(OvEye eye);
 
 
 	/**
 	 * @brief Releases the swapchain image after that the application is done rendering.
 	 * @param eye left or right eye
+	 * @return TF
 	 */
-	void unlockSwapchain(OvEye eye);
+	bool unlockSwapchain(OvEye eye);
 
 
 	/**
 	 * @brief Performs frame submission to the HMD
+	 * @return TF
 	 */
-	void endFrame();
+	bool endFrame();
 
 
 	/**
@@ -205,6 +203,12 @@ public:
      * @return return OpenXR System referred by ID
      */
 	XrSystemId getSystem();
+
+
+	/**
+	 * @brief Override default PlatfomrRenderer
+	 */
+	void setPlatformRenderer(PlatformRenderer * ext);
 
 private:
 	// Session running flag

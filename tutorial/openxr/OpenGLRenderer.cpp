@@ -143,7 +143,7 @@ bool OpenGLRenderer::initPlatformResources(int width, int height)
 
 }
 
-XrSwapchain OpenGLRenderer::getSwapchian(int eye)
+XrSwapchain OpenGLRenderer::getSwapchain(int eye)
 {
     return swapchains[eye].handle;
 }
@@ -166,7 +166,7 @@ bool OpenGLRenderer::beginEyeFrame(int eye, int textureIndex)
     glViewport(0, 0, sizeX, sizeY);
 }
 
-bool OpenGLRenderer::endEyeRender(int eye, int textureIndex)
+bool OpenGLRenderer::endEyeFrame(int eye, int textureIndex)
 {
     //bind default framebuffer
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
