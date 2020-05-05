@@ -71,7 +71,7 @@ bool OvXR::init()
 	systemGetInfo.type = XR_TYPE_SYSTEM_GET_INFO;
 	// the following attribute specifics the form factor
 	// XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY --> The tracked display is attached to
-	// the user’s head (VR headset use case)
+	// the userï¿½s head (VR headset use case)
 	systemGetInfo.formFactor = XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY;
 
 	// retrive the system ID and check the result of the operation
@@ -88,7 +88,7 @@ bool OvXR::init()
 	//          VIEW Configuration[8]
 	// setting of view configuration
 	// XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO --> Two views representing the form
-	// factor’s two primary displays, which map to a left-eye and right-eye view.
+	// factorï¿½s two primary displays, which map to a left-eye and right-eye view.
 	// This configuration requires two views in XrViewConfigurationProperties and two
 	// views in each XrCompositionLayerProjection layer.
 	// View index 0 must represent the left eye and view index 1 must represent the right eye.
@@ -662,5 +662,8 @@ XrSystemId OvXR::getSystem()
 
 void OvXR::setPlatformRenderer(PlatformRenderer * ext)
 {
+	if (platformRenderer != nullptr)
+		delete platformRenderer;
+
 	platformRenderer = ext;
 }

@@ -75,6 +75,8 @@ unsigned int globalVao = 0;
 unsigned int boxVertexVbo = 0;
 unsigned int boxTexCoordVbo = 0;
 
+glm::vec3 color{ 0.f };
+
 // Textures:
 unsigned int eyeTexId[OvXR::EYE_LAST] = { 0, 0 };
 
@@ -154,12 +156,10 @@ void STD_CALL DebugCallback(GLenum source, GLenum type, GLuint id, GLenum severi
 
 void renderScene()
 {
-	float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	float g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	float b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-	glClearColor(r, g, b, 1);
+	glClearColor(color.x, color.y, color.z, 1.f);
 	//glClearColor(1.f, 0.f, 0.f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 }
 
 
@@ -280,6 +280,17 @@ void reshapeCallback(int width, int height)
 		glutReshapeWindow(APP_WINDOWSIZEX, APP_WINDOWSIZEY);
 }
 
+void timerCallback(int value)
+{
+	float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	float g = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+	float b = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+
+	color = glm::vec3{ r, g, b };
+	
+	glutTimerFunc(1000, timerCallback, 0);
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
@@ -389,6 +400,7 @@ int main(int argc, char *argv[])
 	glutDisplayFunc(displayCallback);
 	glutReshapeFunc(reshapeCallback);
 	glutCloseFunc(closeCallback);
+	glutTimerFunc(1000, timerCallback, 0);
 
 	// Init VAO:   
 	glGenVertexArrays(1, &globalVao);

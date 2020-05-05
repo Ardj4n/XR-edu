@@ -662,5 +662,8 @@ XrSystemId OvXR::getSystem()
 
 void OvXR::setPlatformRenderer(PlatformRenderer * ext)
 {
+	if (platformRenderer != nullptr)
+		delete platformRenderer;
+
 	platformRenderer = ext;
 }
