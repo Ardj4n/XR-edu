@@ -531,14 +531,22 @@ bool OvXR::free()
 	}
 
 	// destroy space
-	if (xrSpace != XR_NULL_HANDLE)
+	if (xrSpace != XR_NULL_HANDLE) {
 		xrDestroySpace(xrSpace);
+		xrSpace = XR_NULL_HANDLE;
+	}
+		
 	// destroy session
-	if (xrSession != XR_NULL_HANDLE)
+	if (xrSession != XR_NULL_HANDLE) {
 		xrDestroySession(xrSession);
+		xrSession = XR_NULL_HANDLE;
+	}
+	
 	// destroy instance
-	if (xrInstance != XR_NULL_HANDLE)
+	if (xrInstance != XR_NULL_HANDLE) {
 		xrDestroyInstance(xrInstance);
+		xrInstance = XR_NULL_HANDLE;
+	}
 
 	if (graphicsBinding != nullptr) {
 		delete graphicsBinding;
