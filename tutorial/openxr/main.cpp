@@ -298,9 +298,8 @@ void timerCallback(int value)
  */
 void closeCallback()
 {
-	// Free OpenXR:   
-	oxr->free();
-	delete oxr;
+	// close OpenXR session:   
+	oxr->endSession();
 
 	// Free OpenGL stuff:
 	glDeleteBuffers(1, &boxVertexVbo);
@@ -505,5 +504,9 @@ int main(int argc, char *argv[])
 
 	// Done:
 	std::cout << "[application terminated]" << std::endl;
+
+	// Free OvXR
+	delete oxr;
+
 	return 0;
 }

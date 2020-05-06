@@ -115,21 +115,22 @@ void testOpenXR()
 	
 	res = oxr->endSession();
     ASSERT_WITH_MESSAGE(res, "failed endSession")
-
-	res = oxr->free();
-    ASSERT_WITH_MESSAGE(res, "failed free")
-
+	
 	std::map<std::string, int> map = pr->getMap();
 
-    ASSERT_WITH_MESSAGE(map["free"] == 1					, "wrong number of 'free' calls")
     ASSERT_WITH_MESSAGE(map["initSwapchains"] == 1			, "wrong number of 'initSwapchains' calls")
     ASSERT_WITH_MESSAGE(map["initPlatformResources"] == 1	, "wrong number of 'initPlatformResources' calls")
     ASSERT_WITH_MESSAGE(map["getSwapchain"] == 400			, "wrong number of 'getSwapchain' calls")
     ASSERT_WITH_MESSAGE(map["getRenderExtensionName"] == 2	, "wrong number of 'getRenderExtensionName' calls")
     ASSERT_WITH_MESSAGE(map["getGraphicsBinding"] == 1		, "wrong number of 'getGraphicsBinding' calls")
     ASSERT_WITH_MESSAGE(map["beginEyeFrame"] == 200			, "wrong number of 'beginEyeFrame' calls")
-    ASSERT_WITH_MESSAGE(map["endEyeFrame"] == 200			, "wrong number of 'endEyeFrame' calls")
+    ASSERT_WITH_MESSAGE(map["endEyeFrame"] == 200			, "wrong number of 'endEyeFrame' calls")	
 
+
+	res = oxr->free();
+	ASSERT_WITH_MESSAGE(res, "failed free");
+
+	delete oxr;
 }
 
 

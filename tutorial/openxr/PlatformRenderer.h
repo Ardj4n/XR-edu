@@ -16,6 +16,9 @@
 class PlatformRenderer
 {
 public:
+
+	virtual ~PlatformRenderer() {};
+
 	/**
 	 * @brief Release graphics-API resources.
 	 * @return TF

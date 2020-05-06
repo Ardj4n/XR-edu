@@ -23,7 +23,7 @@ OvXR::OvXR(const std::string & app_name)
 
 OvXR::~OvXR()
 {
-
+	free();
 }
 
 bool OvXR::init()
@@ -524,7 +524,11 @@ bool OvXR::free()
 		return false;
 
 	//free platfomr resources
-	platformRenderer->free();
+	if (platformRenderer != nullptr) {
+		platformRenderer->free();
+		delete platformRenderer;
+		platformRenderer = nullptr;
+	}
 
 	// destroy space
 	if (xrSpace != XR_NULL_HANDLE)
@@ -536,8 +540,10 @@ bool OvXR::free()
 	if (xrInstance != XR_NULL_HANDLE)
 		xrDestroyInstance(xrInstance);
 
-	if (graphicsBinding)
+	if (graphicsBinding != nullptr) {
 		delete graphicsBinding;
+		graphicsBinding = nullptr;
+	}
 
 	return true;
 }
