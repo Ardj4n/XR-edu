@@ -193,5 +193,7 @@ bool OpenGLRenderer::free()
                 glDeleteTextures(1, &swapchains[i].surfaceImages[j].image);
             }
         }
+
+		swapchains.clear();
     }
 }
